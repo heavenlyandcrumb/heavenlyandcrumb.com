@@ -80,41 +80,60 @@
 
     /* PRODUCTS */
 
-    .product {
-      background: #fffdf8;
-      border: 1px solid rgba(27, 35, 54, 0.13);
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 14px;
+    .product-category {
+  margin: 30px 0 14px;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
 
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
+.product {
+  position: relative;
+  background: #fffdf8;
+  border: 1px solid rgba(27, 35, 54, 0.12);
+  border-radius: 18px;
+  padding: 22px 20px;
+  margin-bottom: 14px;
 
-    .product-info {
-      flex: 1;
-    }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 
-    .product-name {
-      font-size: 19px;
-      margin-bottom: 6px;
-    }
+  box-shadow: 0 4px 14px rgba(27, 35, 54, 0.035);
+}
 
-    .product-description {
-      font-size: 14px;
-      line-height: 1.45;
-      opacity: 0.75;
-      margin-bottom: 7px;
-    }
+.product-info {
+  flex: 1;
+}
 
-    .product-price {
-      font-family: Arial, sans-serif;
-      font-size: 13px;
-      letter-spacing: 0.7px;
-      font-weight: bold;
-    }
+.product-name {
+  font-size: 20px;
+  line-height: 1.2;
+  margin-bottom: 7px;
+}
+
+.product-description {
+  max-width: 390px;
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.72;
+  margin-bottom: 10px;
+}
+
+.product-price {
+  display: inline-block;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.8px;
+  font-weight: bold;
+  background: rgba(27, 35, 54, 0.06);
+  border-radius: 20px;
+  padding: 6px 10px;
+}
 
     /* QUANTITY */
 
@@ -306,7 +325,7 @@
 
     <h2 class="section-title">Choose Your Bakes</h2>
 
-
+<div class="product-category">ARTISAN SOURDOUGH</div>
     <div class="product" data-name="The Heavenly Loaf" data-price="10">
       <div class="product-info">
         <div class="product-name">The Heavenly Loaf</div>
@@ -340,7 +359,7 @@
       </div>
     </div>
 
-
+<div class="product-category">SIMPLY SWEET</div>
     <div class="product" data-name="Heavenly Chocolate Chunk - Dozen" data-price="15">
       <div class="product-info">
         <div class="product-name">Heavenly Chocolate Chunk</div>

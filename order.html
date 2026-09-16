@@ -371,6 +371,8 @@
   action="https://formspree.io/f/xjykvvod"
   method="POST"
 >
+      <input type="hidden" id="orderSummary" name="Order Summary">
+      <input type="hidden" id="orderTotal" name="Order Total">
 
       <label for="name">NAME</label>
       <input
@@ -447,6 +449,7 @@
 
     function updateTotal() {
       let total = 0;
+      let orderItems = [];
 
       document.querySelectorAll(".product").forEach(product => {
         const price = Number(product.dataset.price);
@@ -454,11 +457,28 @@
           product.querySelector(".quantity span").textContent
         );
 
-        total += price * quantity;
+        if (quantity > 0) {
+          const itemTotal = price * quantity;
+
+        total += itemTotal;
+
+          orderItems.push(
+            name + "x" + quantity + " -
+            $" + itemTotal.toFixed(2)
+            );
+        }
       });
 
-      document.getElementById("total").textContent =
-        "$" + total.toFixed(2);
+      const formattedTotal = "$" + total.toFixed(2);
+
+      document.getElementById("total").textContent = formattedTotal;
+
+      document.getElementByld("orderSummary").value = 
+        orderItems.length > 0
+      ? orderItems.join("\n")
+        : "No Products Selected";
+
+      document.getElementByld("orderTotal").value = formattedTotal;
     }
 
   </script>

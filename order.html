@@ -480,6 +480,11 @@
 
       document.getElementByld("orderTotal").value = formattedTotal;
     }
+    document
+    .getElementById("orderForm")
+    .addEventListener("submit", function() {
+      updateTotal();
+    });
 
   </script>
 

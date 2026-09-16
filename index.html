@@ -60,11 +60,11 @@
 
     .hero {
       flex: 1;
-      padding: 55px 7% 40px;
+      padding: 35px 7% 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: fkex-start;
       text-align: center;
     }
 
@@ -121,14 +121,16 @@
     /* MOBILE */
     @media (max-width: 700px) {
       nav {
-        padding: 12px 5%;
-        min-height: 90px;
+        padding: 10px 3% 10px 1%;
+        min-height: 100px;
       }
 
       .logo {
-        height: 52px;
-        width: 135px;
-        transform: scale(1.5);
+        height: 60px;
+        width: 165px;
+        max-width: 165px;
+        transform: none;
+        object fit: contain;
         transform-origin: left center;
       }
 
@@ -137,7 +139,7 @@
       }
 
       .nav-links a {
-        font-size: 12px;
+        font-size: 11px;
       }
 
       .hero {

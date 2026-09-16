@@ -1,1 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Preorders | Heavenly & Crumb</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #F8F4EC;
+      color: #1B2336;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    /* HEADER */
+
+    header {
+      background: #1B2336;
+      color: #F8F4EC;
+      text-align: center;
+      padding: 18px 20px 22px;
+    }
+
+    .logo {
+      width: 260px;
+      max-width: 75vw;
+      height: 105px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    .back-home {
+      color: #F8F4EC;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    /* PAGE */
+
+    .order-page {
+      width: min(92%, 720px);
+      margin: 0 auto;
+      padding: 42px 0 60px;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 38px;
+    }
+
+    .intro h1 {
+      font-size: 32px;
+      margin: 0 0 14px;
+      font-weight: normal;
+    }
+
+    .intro p {
+      margin: 0 auto;
+      max-width: 570px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* SECTION TITLES */
+
+    .section-title {
+      font-size: 22px;
+      font-weight: normal;
+      margin: 38px 0 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(27, 35, 54, 0.18);
+    }
+
+    /* PRODUCTS */
+
+    .product {
+      background: #fffdf8;
+      border: 1px solid rgba(27, 35, 54, 0.13);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 14px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .product-info {
+      flex: 1;
+    }
+
+    .product-name {
+      font-size: 19px;
+      margin-bottom: 6px;
+    }
+
+    .product-description {
+      font-size: 14px;
+      line-height: 1.45;
+      opacity: 0.75;
+      margin-bottom: 7px;
+    }
+
+    .product-price {
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.7px;
+      font-weight: bold;
+    }
+
+    /* QUANTITY */
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      border: 1px solid rgba(27, 35, 54, 0.25);
+      border-radius: 30px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .quantity button {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      background: transparent;
+      color: #1B2336;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .quantity span {
+      min-width: 30px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    /* TOTAL */
+
+    .total-box {
+      background: #1B2336;
+      color: #F8F4EC;
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin: 26px 0 38px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      font-family: Arial, sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .total-label {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    #total {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    /* FORM */
+
+    label {
+      display: block;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin: 18px 0 8px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid rgba(27, 35, 54, 0.25);
+      border-radius: 9px;
+      background: #fffdf8;
+      color: #1B2336;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    /* NOTICE */
+
+    .notice {
+      margin-top: 35px;
+      padding: 22px;
+      background: #fffdf8;
+      border: 1px solid rgba(27, 35, 54, 0.13);
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* SUBMIT */
+
+    .submit-button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 17px 24px;
+      border: 0;
+      border-radius: 30px;
+      background: #1B2336;
+      color: #F8F4EC;
+
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1.7px;
+
+      cursor: pointer;
+    }
+
+    /* FOOTER */
+
+    footer {
+      text-align: center;
+      border-top: 1px solid rgba(27, 35, 54, 0.12);
+      padding: 24px 20px 30px;
+
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.4px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 600px) {
+      header {
+        padding-top: 14px;
+      }
+
+      .logo {
+        width: 285px;
+        height: 105px;
+      }
+
+      .order-page {
+        width: 90%;
+        padding-top: 34px;
+      }
+
+      .intro h1 {
+        font-size: 29px;
+      }
+
+      .product {
+        padding: 18px 16px;
+      }
+
+      .product-name {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <a href="index.html">
+      <img
+        src="nobluetransparent.PNG"
+        alt="Heavenly & Crumb"
+        class="logo"
+      >
+    </a>
+
+    <a href="index.html" class="back-home">
+      ← Back to Home
+    </a>
+  </header>
+
+
+  <main class="order-page">
+
+    <section class="intro">
+      <h1>Heavenly & Crumb Preorders</h1>
+
+      <p>
+        Fresh-baked artisan sourdough and simply sweet treats,
+        made in small batches in Brackettville, Texas.
+      </p>
+    </section>
+
+
+    <h2 class="section-title">Choose Your Bakes</h2>
+
+
+    <div class="product" data-price="10">
+      <div class="product-info">
+        <div class="product-name">The Heavenly Loaf</div>
+        <div class="product-description">
+          Our classic artisan sourdough loaf.
+        </div>
+        <div class="product-price">$10</div>
+      </div>
+
+      <div class="quantity">
+        <button type="button" onclick="changeQty(this, -1)">−</button>
+        <span>0</span>
+        <button type="button" onclick="changeQty(this, 1)">+</button>
+      </div>
+    </div>
+
+
+    <div class="product" data-price="14">
+      <div class="product-info">
+        <div class="product-name">Hellapeño Cheese™</div>
+        <div class="product-description">
+          Jalapeño and cheddar artisan sourdough.
+        </div>
+        <div class="product-price">$14</div>
+      </div>
+
+      <div class="quantity">
+        <button type="button" onclick="changeQty(this, -1)">−</button>
+        <span>0</span>
+        <button type="button" onclick="changeQty(this, 1)">+</button>
+      </div>
+    </div>
+
+
+    <div class="product" data-price="15">
+      <div class="product-info">
+        <div class="product-name">Heavenly Chocolate Chunk</div>
+        <div class="product-description">
+          One dozen Heavenly Chocolate Chunk cookies.
+        </div>
+        <div class="product-price">$15 / dozen</div>
+      </div>
+
+      <div class="quantity">
+        <button type="button" onclick="changeQty(this, -1)">−</button>
+        <span>0</span>
+        <button type="button" onclick="changeQty(this, 1)">+</button>
+      </div>
+    </div>
+
+
+    <div class="total-box">
+      <span class="total-label">ORDER TOTAL</span>
+      <span id="total">$0.00</span>
+    </div>
+
+
+    <h2 class="section-title">Your Information</h2>
+
+    <form id="orderForm">
+
+      <label for="name">NAME</label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        autocomplete="name"
+        required
+      >
+
+      <label for="phone">PHONE NUMBER</label>
+      <input
+        id="phone"
+        name="phone"
+        type="tel"
+        autocomplete="tel"
+        required
+      >
+
+      <label for="email">EMAIL</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        autocomplete="email"
+      >
+
+      <label for="notes">ORDER NOTES</label>
+      <textarea
+        id="notes"
+        name="notes"
+        placeholder="Anything we should know about your order?"
+      ></textarea>
+
+
+      <div class="notice">
+        <strong>Preorder Information:</strong><br><br>
+
+        Submitting this form does not guarantee your order.
+        Your preorder is confirmed only after payment is received
+        and you receive an order confirmation from Heavenly & Crumb.
+        Availability is limited and orders are filled in the order
+        payment is received. Please do not submit payment until you
+        receive payment instructions.
+      </div>
+
+
+      <button type="submit" class="submit-button">
+        SUBMIT PREORDER
+      </button>
+
+    </form>
+
+  </main>
+
+
+  <footer>
+    HOMEMADE • SMALL BATCH • BAKED WITH LOVE ♡
+  </footer>
+
+
+  <script>
+    function changeQty(button, amount) {
+      const quantity = button.parentElement;
+      const number = quantity.querySelector("span");
+
+      let current = parseInt(number.textContent);
+      current = Math.max(0, current + amount);
+
+      number.textContent = current;
+
+      updateTotal();
+    }
+
+    function updateTotal() {
+      let total = 0;
+
+      document.querySelectorAll(".product").forEach(product => {
+        const price = Number(product.dataset.price);
+        const quantity = Number(
+          product.querySelector(".quantity span").textContent
+        );
+
+        total += price * quantity;
+      });
+
+      document.getElementById("total").textContent =
+        "$" + total.toFixed(2);
+    }
+
+    document
+      .getElementById("orderForm")
+      .addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        alert(
+          "Our preorder page is still being tested ♡"
+        );
+      });
+  </script>
+
+</body>
+</html>

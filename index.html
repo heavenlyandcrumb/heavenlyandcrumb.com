@@ -119,25 +119,35 @@
     /* MOBILE */
     @media (max-width: 700px) {
       nav {
-        padding: 10px 3% 10px 1%;
-        min-height: 100px;
+        padding: 16px 4% 14px;
+        min-height: auto;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
       }
 
       .logo {
-        height: 60px;
-        width: 190px;
-        transform: scale(1.8);
+        height: 100px;
+        width: 290px;
+        max-width: 82vm;
+        transform: none;
         object fit: contain;
-        transform-origin: left center;
-        display: block;
+        transform-origin: center;
+        object-position: center;
       }
 
       .nav-links {
         gap: 12px;
+        width: 100%
+        display: flex;
+        justify-content: center;
+        gap: 22px;
       }
 
       .nav-links a {
-        font-size: 11px;
+        font-size: 15px;
+        white-space: nowrap;
       }
 
       .hero {
@@ -188,8 +198,8 @@
       </div>
 
       <p class="tagline">
-        Artisan sourdough and simply sweet treats, baked in
-        Brackettville, Texas ⋆
+        Artisan sourdough and simply sweet treats, 
+        baked in Brackettville, Texas ⋆
       </p>
 
       <a class="order-button" href="#">
@@ -199,7 +209,7 @@
     </section>
 
     <div class="bottom-line">
-      HOMEMADE • INTENTION• BAKED WITH LOVE ♡
+      HOMEMADE • SMALL BATCH • BAKED WITH LOVE ♡
     </div>
   </main>
 

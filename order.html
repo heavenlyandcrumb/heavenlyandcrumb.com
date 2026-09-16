@@ -670,10 +670,31 @@
   }
 
   document
-    .getElementById("orderForm")
-    .addEventListener("submit", function() {
-      updateTotal();
+  .getElementById("orderForm")
+  .addEventListener("submit", function(event) {
+    updateTotal();
+
+    const hasProducts = Array.from(
+      document.querySelectorAll(".product")
+    ).some(product => {
+      return Number(
+        product.querySelector(".quantity span").textContent
+      ) > 0;
     });
+
+    if (!hasProducts) {
+      event.preventDefault();
+
+      alert(
+        "Please choose at least one bake before submitting your preorder ♡"
+      );
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+  });
 </script>
 
 </body>

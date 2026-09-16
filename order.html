@@ -434,59 +434,59 @@
   </footer>
 
 
-  <script>
-    function changeQty(button, amount) {
-      const quantity = button.parentElement;
-      const number = quantity.querySelector("span");
+<script>
+  function changeQty(button, amount) {
+    const quantity = button.parentElement;
+    const number = quantity.querySelector("span");
 
-      let current = parseInt(number.textContent);
-      current = Math.max(0, current + amount);
+    let current = parseInt(number.textContent);
+    current = Math.max(0, current + amount);
 
-      number.textContent = current;
+    number.textContent = current;
 
-      updateTotal();
-    }
+    updateTotal();
+  }
 
-    function updateTotal() {
-      let total = 0;
-      let orderItems = [];
+  function updateTotal() {
+    let total = 0;
+    let orderItems = [];
 
-      document.querySelectorAll(".product").forEach(product => {
-        const price = Number(product.dataset.price);
-        const quantity = Number(
-          product.querySelector(".quantity span").textContent
-        );
+    document.querySelectorAll(".product").forEach(product => {
+      const name = product.dataset.name;
+      const price = Number(product.dataset.price);
+      const quantity = Number(
+        product.querySelector(".quantity span").textContent
+      );
 
-        if (quantity > 0) {
-          const itemTotal = price * quantity;
+      if (quantity > 0) {
+        const itemTotal = price * quantity;
 
         total += itemTotal;
 
-          orderItems.push(
-            name + "x" + quantity + " -
-            $" + itemTotal.toFixed(2)
-            );
-        }
-      });
+        orderItems.push(
+          name + " x" + quantity + " — $" + itemTotal.toFixed(2)
+        );
+      }
+    });
 
-      const formattedTotal = "$" + total.toFixed(2);
+    const formattedTotal = "$" + total.toFixed(2);
 
-      document.getElementById("total").textContent = formattedTotal;
+    document.getElementById("total").textContent = formattedTotal;
 
-      document.getElementByld("orderSummary").value = 
-        orderItems.length > 0
-      ? orderItems.join("\n")
+    document.getElementById("orderSummary").value =
+      orderItems.length > 0
+        ? orderItems.join("\n")
         : "No Products Selected";
 
-      document.getElementByld("orderTotal").value = formattedTotal;
-    }
-    document
+    document.getElementById("orderTotal").value = formattedTotal;
+  }
+
+  document
     .getElementById("orderForm")
     .addEventListener("submit", function() {
       updateTotal();
     });
-
-  </script>
+</script>
 
 </body>
 </html>

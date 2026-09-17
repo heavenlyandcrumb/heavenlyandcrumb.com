@@ -1,1 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Our Story | Heavenly & Crumb</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #F8F4EC;
+      color: #1B2336;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    /* HEADER */
+
+    header {
+      background: #1B2336;
+      color: #F8F4EC;
+      text-align: center;
+      padding: 18px 20px 20px;
+    }
+
+    .logo {
+      width: 260px;
+      max-width: 75vw;
+      height: 105px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+
+    nav {
+      margin-top: 6px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px 24px;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.4px;
+    }
+
+    nav a {
+      color: #F8F4EC;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* PAGE INTRO */
+
+    .story-intro {
+      width: min(90%, 760px);
+      margin: 0 auto;
+      padding: 70px 0 55px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin-bottom: 15px;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 2.4px;
+      color: rgba(27, 35, 54, 0.65);
+    }
+
+    .story-intro h1 {
+      margin: 0 0 20px;
+      font-size: 48px;
+      line-height: 1.1;
+      font-weight: normal;
+    }
+
+    .story-intro p {
+      max-width: 610px;
+      margin: 0 auto;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .little-heart {
+      margin-top: 25px;
+      font-size: 25px;
+    }
+
+    /* STORY SECTIONS */
+
+    main {
+      overflow: hidden;
+    }
+
+    .story-section {
+      width: min(90%, 1050px);
+      margin: 0 auto;
+      padding: 55px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 65px;
+      align-items: center;
+    }
+
+    .story-section.reverse .story-image {
+      order: 2;
+    }
+
+    .story-section.reverse .story-copy {
+      order: 1;
+    }
+
+    .story-image img {
+      width: 100%;
+      height: 560px;
+      object-fit: cover;
+      border-radius: 22px;
+      display: block;
+      box-shadow: 0 8px 25px rgba(27, 35, 54, 0.08);
+    }
+
+    .story-image.heart-photo img {
+      object-position: center;
+    }
+
+    .story-image.wedding-photo img {
+      object-position: center;
+    }
+
+    .story-image.heavenly-photo img {
+      object-position: center;
+    }
+
+    .photo-caption {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.5;
+      color: rgba(27, 35, 54, 0.68);
+    }
+
+    .section-label {
+      margin-bottom: 13px;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 2.2px;
+      color: rgba(27, 35, 54, 0.58);
+    }
+
+    .story-copy h2 {
+      margin: 0 0 22px;
+      font-size: 36px;
+      line-height: 1.15;
+      font-weight: normal;
+    }
+
+    .story-copy p {
+      margin: 0 0 18px;
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    /* QUOTE */
+
+    .story-quote {
+      margin: 28px 0;
+      padding: 24px 26px;
+      background: rgba(27, 35, 54, 0.055);
+      border-left: 3px solid #1B2336;
+      border-radius: 0 14px 14px 0;
+    }
+
+    .story-quote p {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.35;
+      font-style: italic;
+    }
+
+    /* DIVIDERS */
+
+    .divider {
+      width: min(90%, 1050px);
+      height: 1px;
+      margin: 0 auto;
+      background: rgba(27, 35, 54, 0.12);
+    }
+
+    /* HEAVENLY SECTION */
+
+    .heavenly-section {
+      margin-top: 55px;
+      padding: 75px 0;
+      background: rgba(27, 35, 54, 0.055);
+    }
+
+    .heavenly-section .story-section {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    /* CLOSING */
+
+    .story-closing {
+      width: min(90%, 720px);
+      margin: 0 auto;
+      padding: 90px 0;
+      text-align: center;
+    }
+
+    .story-closing h2 {
+      margin: 0 0 22px;
+      font-size: 38px;
+      line-height: 1.2;
+      font-weight: normal;
+    }
+
+    .story-closing p {
+      margin: 0 auto 30px;
+      max-width: 620px;
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    .order-button {
+      display: inline-block;
+      padding: 16px 30px;
+      border-radius: 30px;
+      background: #1B2336;
+      color: #F8F4EC;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+    }
+
+    /* FOOTER */
+
+    footer {
+      text-align: center;
+      border-top: 1px solid rgba(27, 35, 54, 0.12);
+      padding: 28px 20px 32px;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.4px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 700px) {
+      header {
+        padding-top: 14px;
+      }
+
+      .logo {
+        width: 285px;
+        height: 105px;
+      }
+
+      nav {
+        gap: 10px 18px;
+        font-size: 10px;
+      }
+
+      .story-intro {
+        padding: 52px 0 32px;
+      }
+
+      .story-intro h1 {
+        font-size: 39px;
+      }
+
+      .story-intro p {
+        font-size: 17px;
+      }
+
+      .story-section {
+        padding: 42px 0;
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .story-section.reverse .story-image,
+      .story-section.reverse .story-copy {
+        order: initial;
+      }
+
+      .story-image img {
+        height: auto;
+        max-height: 560px;
+        object-fit: cover;
+      }
+
+      .story-copy h2 {
+        font-size: 31px;
+      }
+
+      .story-copy p {
+        font-size: 16px;
+        line-height: 1.7;
+      }
+
+      .story-quote {
+        margin: 24px 0;
+        padding: 21px 22px;
+      }
+
+      .story-quote p {
+        font-size: 22px;
+      }
+
+      .heavenly-section {
+        margin-top: 30px;
+        padding: 48px 0;
+      }
+
+      .story-closing {
+        padding: 65px 0;
+      }
+
+      .story-closing h2 {
+        font-size: 32px;
+      }
+
+      .order-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <a href="index.html">
+      <img
+        src="nobluetransparent.PNG"
+        alt="Heavenly & Crumb"
+        class="logo"
+      >
+    </a>
+
+    <nav>
+      <a href="index.html">HOME</a>
+      <a href="index.html#menu">MENU</a>
+      <a href="our-story.html">OUR STORY</a>
+      <a href="index.html#contact">CONTACT</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- INTRO -->
+
+    <section class="story-intro">
+      <div class="eyebrow">HEAVENLY & CRUMB</div>
+
+      <h1>Our Story</h1>
+
+      <p>
+        From a little sourdough hobby to a little bakery dream come true!
+        This is how Heavenly & Crumb came to be.
+      </p>
+
+      <div class="little-heart">♡</div>
+    </section>
+
+    <!-- MEET THE BAKER -->
+
+    <section class="story-section">
+      <div class="story-image">
+        <img
+          src="amber.JPEG"
+          alt="Amber, baker and founder of Heavenly & Crumb, holding sourdough starter Edna"
+        >
+
+        <div class="photo-caption">
+          Amber + Edna, the sourdough starter behind it all.
+        </div>
+      </div>
+
+      <div class="story-copy">
+        <div class="section-label">MEET THE BAKER</div>
+
+        <h2>Hello! I'm Amber ♡</h2>
+
+        <p>
+          I'm so happy you're here! My name is Amber and I'm the baker, founder, owner,
+          creative director, and everything in between
+          behind Heavenly & Crumb. ♡
+        </p>
+
+        <p>
+          What started as me learning to make sourdough at home
+          quickly became something I couldn’t stop creating,
+          sharing, and dreaming about. I've put a lot of love into every aspect of 
+          Heavenly & Crumb and although we're just at the beginning, I'm already 
+          extremely proud of where we are and excited to see where we go next!
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- WHERE IT STARTED -->
+
+    <section class="story-section reverse">
+      <div class="story-image heart-photo">
+        <img
+          src="heart.JPEG"
+          alt="The sourdough loaf that inspired the first Heavenly & Crumb order"
+        >
+
+        <div class="photo-caption">
+          The loaf that started it all. ♡
+        </div>
+      </div>
+
+      <div class="story-copy">
+        <div class="section-label">WHERE IT STARTED</div>
+
+        <h2>Just a girl, some flour, water, and a dream.</h2>
+
+        <p>
+          Our story began in October 2025 with just a girl,
+          some flour, water, and a dream. Before I even made
+          my first edible loaf, I imagined myself running a
+          cute little bakery.
+        </p>
+
+        <p>
+          By February 2026, I was confidently making something
+          I was genuinely proud of and decided to share my work
+          at a Galentine’s party, where I was asked the question
+          that changed the direction of this little hobby:
+        </p>
+
+        <div class="story-quote">
+          <p>“Do you sell this?”</p>
+        </div>
+
+        <p>
+          At the time, the answer was no. But that loaf would
+          lead to my first-ever order: a wedding!
+        </p>
+
+        <p>
+          Suddenly, baking for other people didn’t feel like
+          such a faraway idea.
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- FIRST WEDDING -->
+
+    <section class="story-section">
+      <div class="story-image wedding-photo">
+        <img
+          src="wedding.JPEG"
+          alt="Amber with sourdough loaves prepared for her first wedding order"
+        >
+
+        <div class="photo-caption">
+          Our first wedding bake, with the help of my best friend ♡
+        </div>
+      </div>
+
+      <div class="story-copy">
+        <div class="section-label">BEFORE H&C WAS H&C</div>
+
+        <h2>There was a wedding order.</h2>
+
+        <p>
+          Before there were labels, menus, product names,
+          or even a used social media page, there was a
+          wedding order. 
+        </p>
+        
+        <p>
+OUR FIRST ORDER!
+        </p>
+        
+        <p>
+          I was still a brand-new sourdough baker, but someone
+          trusted me to put my bread on one of the biggest
+          tables of their life.
+        </p>
+
+        <p>
+          I said yes, and Heavenly & Crumb started becoming
+          a little more real. I recruited my best friend to help me 
+          attack this very large (and very intimidating!) order, and together 
+          we completed Heavenly & Crumb's very first request!
+        </p>
+      </div>
+    </section>
+
+    <!-- HEAVENLY -->
+
+    <section class="heavenly-section">
+      <div class="story-section reverse">
+
+        <div class="story-image heavenly-photo">
+          <img
+            src="heavenly.JPEG"
+            alt="Heavenly, the inspiration behind the Heavenly & Crumb name"
+          >
+
+          <div class="photo-caption">
+            The Heavenly in Heavenly & Crumb. ♡
+          </div>
+        </div>
+
+        <div class="story-copy">
+          <div class="section-label">THE NAME BEHIND THE BAKERY</div>
+
+          <h2>Why Heavenly & Crumb? ♡</h2>
+
+          <p>
+            At the heart of the name Heavenly & Crumb is
+            someone very special: Heavenly.
+          </p>
+
+          <p>
+            This little bakery carries her name — and this
+            part of our story deserves a chapter of its own.
+          </p>
+
+          <p> <strong>Heavenly Grace is my oldest daughter and the heart behind Heavenly & Crumb. ♡</strong>
+          </p>
+
+<p>
+  Heavenly entered the world much earlier than expected in 2018, born at just 23 weeks and 4 days. 
+  At only 1 pound 3 ounces, she spent the beginning of her life fighting through a long NICU journey.
+</p>
+<p>
+  Today, she’s the bright, funny, incredibly smart little girl you see here; 
+  and one of the biggest reasons I’ve learned to believe that something small can grow into something extraordinary.
+</p>
+          <p>
+When it came time to give this little bakery a name, I wanted it to mean something. 
+            <strong>Heavenly & Crumb</strong> felt like us: a little playful, a little sweet, and rooted in someone who has inspired me from the very beginning.
+</p>
+          <p>
+Every loaf, every cookie, every late-night bake, and every little dream I have for this business gets to carry a piece of her name with it. ♡</p>
+       </p> 
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TODAY -->
+
+    <section class="story-closing">
+      <div class="section-label">AND WE’RE JUST GETTING STARTED</div>
+
+      <h2>From our kitchen to your table. ♡</h2>
+
+      <p>
+  Today, Heavenly & Crumb is a small-batch cottage bakery in
+  Brackettville, Texas, creating artisan sourdough and simply sweet
+  treats with a whole lot of love behind them.
+</p>
+
+<p>
+  What started with flour, water, and a little bakery dream has grown
+  into named loaves, late-night bakes, first-time customers, returning
+  customers, and a business I’m incredibly proud to call ours.
+</p>
+
+<p>
+  We’re still at the very beginning of the Heavenly & Crumb story.
+  I don’t know exactly how big this little bakery will grow, but I do
+  know I’ll keep baking, creating, learning, and dreaming about what
+  comes next.
+</p>
+
+<p>
+  <strong>Thank you for being here while we build it. ♡</strong>
+</p>
+
+      <a href="order.html" class="order-button">
+        PREORDER YOUR BAKES
+      </a>
+    </section>
+
+  </main>
+
+  <footer>
+    HOMEMADE • SMALL BATCH • BAKED WITH LOVE ♡
+  </footer>
+
+</body>
+</html>

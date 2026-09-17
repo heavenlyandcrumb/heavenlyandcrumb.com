@@ -680,6 +680,7 @@
     HOMEMADE • SMALL BATCH • BAKED WITH LOVE ♡
   </footer>
 
+  <script src="https://unpkg.com/@formspree/ajax@1"></script>
 
   <script>
     const requestedDate = document.getElementById("requestedDate");
@@ -814,84 +815,77 @@
       });
 
 
-    const orderForm = document.getElementById("orderForm");
+    onst orderForm = document.getElementById("orderForm");
 const submitButton = orderForm.querySelector(".submit-button");
 
-orderForm.addEventListener("submit", async function(event) {
-  event.preventDefault();
+const formspree = new Formspree.Form({
+  form: orderForm,
 
-  updateTotal();
-  updateEmailRequirement();
+  onSubmit: function() {
+    updateTotal();
+    updateEmailRequirement();
 
-  const selectedDate = requestedDate.value;
+    const selectedDate = requestedDate.value;
 
-  if (selectedDate && selectedDate < requestedDate.min) {
-    alert(
-      "Please allow at least 2 days for your preorder requests ♡"
-    );
+    if (selectedDate && selectedDate < requestedDate.min) {
+      alert(
+        "Please allow at least 2 days for your preorder requests ♡"
+      );
 
-    requestedDate.focus();
-    return;
-  }
-
-  const hasProducts = Array.from(
-    document.querySelectorAll(".product")
-  ).some(product => {
-    return Number(
-      product.querySelector(".quantity span").textContent
-    ) > 0;
-  });
-
-  if (!hasProducts) {
-    alert(
-      "Please choose at least one bake before submitting your preorder ♡"
-    );
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
-    return;
-  }
-
-  if (
-    emailField.required &&
-    emailField.value.trim() === ""
-  ) {
-    emailField.focus();
-
-    alert(
-      "Please enter your email address so we know where to contact you ♡"
-    );
-
-    return;
-  }
-
-  if (!orderForm.checkValidity()) {
-    orderForm.reportValidity();
-    return;
-  }
-
-  submitButton.disabled = true;
-  submitButton.textContent = "SUBMITTING...";
-
-  try {
-    const response = await fetch(orderForm.action, {
-      method: "POST",
-      body: new FormData(orderForm),
-      headers: {
-        "Accept": "application/json"
-      }
-    });
-
-    if (response.ok) {
-      window.location.href = "thank-you.html";
-      return;
+      requestedDate.focus();
+      return false;
     }
 
-    throw new Error("Form submission failed");
-  } catch (error) {
+    const hasProducts = Array.from(
+      document.querySelectorAll(".product")
+    ).some(product => {
+      return Number(
+        product.querySelector(".quantity span").textContent
+      ) > 0;
+    });
+
+    if (!hasProducts) {
+      alert(
+        "Please choose at least one bake before submitting your preorder ♡"
+      );
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+      return false;
+    }
+
+    if (
+      emailField.required &&
+      emailField.value.trim() === ""
+    ) {
+      emailField.focus();
+
+      alert(
+        "Please enter your email address so we know where to contact you ♡"
+      );
+
+      return false;
+    }
+
+    if (!orderForm.checkValidity()) {
+      orderForm.reportValidity();
+      return false;
+    }
+
+    submitButton.disabled = true;
+    submitButton.textContent = "SUBMITTING...";
+
+    return true;
+  },
+
+  onSuccess: function() {
+    window.location.href = "thank-you.html";
+  },
+
+  onError: function() {
     submitButton.disabled = false;
     submitButton.textContent = "SUBMIT PREORDER";
 

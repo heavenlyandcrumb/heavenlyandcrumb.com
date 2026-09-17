@@ -501,6 +501,20 @@
         name="Order Total"
       >
       
+      <input
+  type="text"
+  id="productValidation"
+  required
+  tabindex="-1"
+  aria-hidden="true"
+  style="
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  "
+>
 
       <p class="required-note">
         Required fields must be completed before submitting your preorder.
@@ -707,6 +721,7 @@
       number.textContent = current;
 
       updateTotal();
+      updateProductValidation();
     }
 
 
@@ -814,25 +829,10 @@
 
 
     const orderForm = document.getElementById("orderForm");
+const productValidation =
+  document.getElementById("productValidation");
 
-orderForm.addEventListener("submit", function(event) {
-  updateTotal();
-  updateEmailRequirement();
-
-  const selectedDate = requestedDate.value;
-
-  if (selectedDate && selectedDate < requestedDate.min) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-
-    alert(
-      "Please allow at least 2 days for your preorder requests ♡"
-    );
-
-    requestedDate.focus();
-    return;
-  }
-
+function updateProductValidation() {
   const hasProducts = Array.from(
     document.querySelectorAll(".product")
   ).some(product => {
@@ -841,10 +841,19 @@ orderForm.addEventListener("submit", function(event) {
     ) > 0;
   });
 
-  if (!hasProducts) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
+  if (hasProducts) {
+    productValidation.value = "Products Selected";
+    productValidation.setCustomValidity("");
+  } else {
+    productValidation.value = "";
+    productValidation.setCustomValidity(
+      "Please choose at least one bake before submitting your preorder ♡"
+    );
+  }
+}
 
+orderForm.addEventListener("invalid", function(event) {
+  if (event.target === productValidation) {
     alert(
       "Please choose at least one bake before submitting your preorder ♡"
     );
@@ -853,37 +862,13 @@ orderForm.addEventListener("submit", function(event) {
       top: 0,
       behavior: "smooth"
     });
-
-    return;
   }
-
-  if (
-    emailField.required &&
-    emailField.value.trim() === ""
-  ) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-
-    emailField.focus();
-
-    alert(
-      "Please enter your email address so we know where to contact you ♡"
-    );
-
-    return;
-  }
-
-  if (!orderForm.checkValidity()) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    orderForm.reportValidity();
-    return;
-  }
-});
-
+}, true);
+    
 setMinimumDate();
     updateTotal();
     updateEmailRequirement();
+    updateProductValidation();
     
     requestedDate.addEventListener("invalid", function() {
   if (requestedDate.validity.rangeUnderflow) {

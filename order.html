@@ -597,7 +597,7 @@
       >
 
       <p class="field-help">
-        Requested dates are subject to availability.
+        Please allow at least 2 days' notice. Requested dates are subject to availability.
       </p>
 
 
@@ -692,14 +692,16 @@
     const emailField = document.getElementById("email");
 
     function setMinimumDate() {
-      const today = new Date();
+  const minimumDate = new Date();
 
-      const year = today.getFullYear();
-      const month = String(today.getMonth() + 1).padStart(2, "0");
-      const day = String(today.getDate()).padStart(2, "0");
+  minimumDate.setDate(minimumDate.getDate() + 2);
 
-      requestedDate.min = year + "-" + month + "-" + day;
-    }
+  const year = minimumDate.getFullYear();
+  const month = String(minimumDate.getMonth() + 1).padStart(2, "0");
+  const day = String(minimumDate.getDate()).padStart(2, "0");
+
+  requestedDate.min = year + "-" + month + "-" + day;
+}
 
 
     function changeQty(button, amount) {
@@ -834,7 +836,20 @@
           ) > 0;
         });
 
+const selectedDate = requestedDate.value;
 
+if (selectedDate && selectedDate < requestedDate.min) {
+  event.preventDefault();
+
+  alert(
+    "Please allow at least 2 days for your preorder requests ♡"
+  );
+
+  requestedDate.focus();
+
+  return;
+}
+        
         if (!hasProducts) {
           event.preventDefault();
 
@@ -867,10 +882,21 @@
         }
       });
 
-
-    setMinimumDate();
+setMinimumDate();
     updateTotal();
     updateEmailRequirement();
+    
+    requestedDate.addEventListener("invalid", function() {
+  if (requestedDate.validity.rangeUnderflow) {
+    requestedDate.setCustomValidity(
+      "Please allow at least 2 days for your preorder requests ♡"
+    );
+  }
+});
+
+requestedDate.addEventListener("input", function() {
+  requestedDate.setCustomValidity("");
+});
   </script>
 
 </body>

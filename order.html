@@ -823,6 +823,7 @@ orderForm.addEventListener("submit", function(event) {
 
   if (selectedDate && selectedDate < requestedDate.min) {
     event.preventDefault();
+    event.stopImmediatePropagation();
 
     alert(
       "Please allow at least 2 days for your preorder requests ♡"
@@ -842,6 +843,7 @@ orderForm.addEventListener("submit", function(event) {
 
   if (!hasProducts) {
     event.preventDefault();
+    event.stopImmediatePropagation();
 
     alert(
       "Please choose at least one bake before submitting your preorder ♡"
@@ -860,6 +862,7 @@ orderForm.addEventListener("submit", function(event) {
     emailField.value.trim() === ""
   ) {
     event.preventDefault();
+    event.stopImmediatePropagation();
 
     emailField.focus();
 
@@ -872,7 +875,9 @@ orderForm.addEventListener("submit", function(event) {
 
   if (!orderForm.checkValidity()) {
     event.preventDefault();
+    event.stopImmediatePropagation();
     orderForm.reportValidity();
+    return;
   }
 });
 

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Preorder Received | Heavenly & Crumb</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #F8F4EC;
+      color: #1B2336;
+      font-family: Georgia, "Times New Roman", serif;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+
+    header {
+      background: #1B2336;
+      color: #F8F4EC;
+      text-align: center;
+      padding: 18px 20px 22px;
+    }
+
+    .logo {
+      width: 260px;
+      max-width: 75vw;
+      height: 105px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* MAIN */
+
+    main {
+      flex: 1;
+      width: min(90%, 680px);
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 55px 0;
+    }
+
+    .thank-you-card {
+      width: 100%;
+      background: #fffdf8;
+      border: 1px solid rgba(27, 35, 54, 0.12);
+      border-radius: 20px;
+      padding: 46px 38px;
+      text-align: center;
+
+      box-shadow: 0 6px 20px rgba(27, 35, 54, 0.04);
+    }
+
+    .heart {
+      font-size: 32px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: 34px;
+      line-height: 1.2;
+      font-weight: normal;
+    }
+
+    .received {
+      margin: 0 auto 28px;
+      max-width: 500px;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    /* NEXT STEPS */
+
+    .next-steps {
+      margin: 30px 0;
+      padding: 24px;
+
+      background: rgba(27, 35, 54, 0.055);
+      border-radius: 14px;
+
+      text-align: left;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .next-steps strong {
+      display: block;
+      margin-bottom: 8px;
+
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+    }
+
+    /* CHANGE NOTICE */
+
+    .change-notice {
+      margin: 26px 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .change-notice strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .change-notice a {
+      color: #1B2336;
+      font-weight: bold;
+    }
+
+    /* BUTTON */
+
+    .home-button {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 15px 30px;
+
+      background: #1B2336;
+      color: #F8F4EC;
+
+      border-radius: 30px;
+
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+
+      text-decoration: none;
+    }
+
+    /* FOOTER */
+
+    footer {
+      text-align: center;
+      border-top: 1px solid rgba(27, 35, 54, 0.12);
+      padding: 24px 20px 30px;
+
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.4px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 600px) {
+      header {
+        padding-top: 14px;
+      }
+
+      .logo {
+        width: 285px;
+        height: 105px;
+      }
+
+      main {
+        width: 90%;
+        padding: 38px 0;
+      }
+
+      .thank-you-card {
+        padding: 36px 22px;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+
+      .received {
+        font-size: 16px;
+      }
+
+      .next-steps {
+        padding: 20px;
+      }
+
+      .home-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <a href="index.html">
+      <img
+        src="nobluetransparent.PNG"
+        alt="Heavenly & Crumb"
+        class="logo"
+      >
+    </a>
+  </header>
+
+
+  <main>
+
+    <section class="thank-you-card">
+
+      <div class="heart">♡</div>
+
+      <h1>We received your preorder!</h1>
+
+      <p class="received">
+        Thank you for choosing Heavenly & Crumb.
+        Your preorder request has been received and
+        we'll be in touch soon.
+      </p>
+
+
+      <div class="next-steps">
+        <strong>WHAT HAPPENS NEXT?</strong>
+
+        Please keep an eye out for a message from Heavenly & Crumb
+        with availability and payment instructions.
+
+        <br><br>
+
+        Your preorder is not confirmed until payment is received
+        and you receive an order confirmation from us.
+      </div>
+
+
+      <div class="change-notice">
+        <strong>Need to make a change? ♡</strong>
+
+        Please don't submit another preorder form.
+        Email
+
+        <a href="mailto:orders@heavenlyandcrumb.com">
+          orders@heavenlyandcrumb.com
+        </a>
+
+        and we'll update your existing request.
+      </div>
+
+
+      <a href="index.html" class="home-button">
+        BACK TO HOME
+      </a>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    HOMEMADE • SMALL BATCH • BAKED WITH LOVE ♡
+  </footer>
+
+</body>
+</html>

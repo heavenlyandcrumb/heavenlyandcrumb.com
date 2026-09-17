@@ -1,1 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Contact | Heavenly & Crumb</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background: #F8F4EC;
+      color: #1B2336;
+      font-family: Georgia, "Times New Roman", serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+
+    header {
+      background: #1B2336;
+      color: #F8F4EC;
+      text-align: center;
+      padding: 18px 20px 20px;
+    }
+
+    .logo {
+      width: 260px;
+      max-width: 75vw;
+      height: 105px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+
+    nav {
+      margin-top: 6px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px 24px;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.4px;
+    }
+
+    nav a {
+      color: #F8F4EC;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* CONTACT */
+
+    main {
+      flex: 1;
+      width: min(90%, 900px);
+      margin: 0 auto;
+      padding: 42px 0 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .contact-intro {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 2.4px;
+      color: rgba(27, 35, 54, 0.62);
+    }
+
+    .contact-intro h1 {
+      margin: 0 0 12px;
+      font-size: 44px;
+      line-height: 1.1;
+      font-weight: normal;
+    }
+
+    .contact-intro p {
+      max-width: 590px;
+      margin: 0 auto;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .heart {
+      margin-top: 12px;
+      font-size: 20px;
+    }
+
+    /* CONTACT CARD */
+
+    .contact-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(27, 35, 54, 0.1);
+      border-radius: 22px;
+      padding: 30px 34px;
+      box-shadow: 0 8px 25px rgba(27, 35, 54, 0.05);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .contact-item {
+      padding: 20px 28px;
+      text-align: center;
+    }
+
+    .contact-item:nth-child(odd) {
+      border-right: 1px solid rgba(27, 35, 54, 0.1);
+    }
+
+    .contact-item:nth-child(-n+2) {
+      border-bottom: 1px solid rgba(27, 35, 54, 0.1);
+    }
+
+    .contact-item h2 {
+      margin: 0 0 9px;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .contact-item p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .contact-item a {
+      color: #1B2336;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    .contact-item a:hover {
+      text-decoration: underline;
+    }
+
+    .contact-note {
+      margin: 24px auto 0;
+      max-width: 720px;
+      text-align: center;
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.55;
+      color: rgba(27, 35, 54, 0.7);
+    }
+
+    /* BUTTON */
+
+    .button-wrap {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .order-button {
+      display: inline-block;
+      padding: 15px 28px;
+      border-radius: 30px;
+      background: #1B2336;
+      color: #F8F4EC;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+    }
+
+    /* FOOTER */
+
+    footer {
+      text-align: center;
+      border-top: 1px solid rgba(27, 35, 54, 0.12);
+      padding: 22px 20px 24px;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      letter-spacing: 1.4px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 700px) {
+      header {
+        padding-top: 14px;
+      }
+
+      .logo {
+        width: 285px;
+        height: 105px;
+      }
+
+      nav {
+        gap: 10px 18px;
+        font-size: 10px;
+      }
+
+      main {
+        width: min(90%, 520px);
+        padding: 30px 0;
+        justify-content: flex-start;
+      }
+
+      .contact-intro {
+        margin-bottom: 22px;
+      }
+
+      .contact-intro h1 {
+        font-size: 37px;
+      }
+
+      .contact-intro p {
+        font-size: 15px;
+      }
+
+      .contact-card {
+        padding: 8px 22px;
+      }
+
+      .contact-grid {
+        display: block;
+      }
+
+      .contact-item {
+        padding: 17px 4px;
+        border-right: none !important;
+        border-bottom: 1px solid rgba(27, 35, 54, 0.1);
+      }
+
+      .contact-item:last-child {
+        border-bottom: none;
+      }
+
+      .contact-note {
+        margin-top: 18px;
+        font-size: 12px;
+      }
+
+      .button-wrap {
+        margin-top: 20px;
+      }
+
+      .order-button {
+        width: 100%;
+      }
+
+      footer {
+        padding: 20px 15px;
+        font-size: 9px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <a href="index.html">
+      <img
+        src="nobluetransparent.PNG"
+        alt="Heavenly & Crumb"
+        class="logo"
+      >
+    </a>
+
+    <nav>
+      <a href="index.html">HOME</a>
+      <a href="menu.html">MENU</a>
+      <a href="our-story.html">OUR STORY</a>
+      <a href="contact.html">CONTACT</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="contact-intro">
+      <p class="eyebrow">HEAVENLY & CRUMB</p>
+      <h1>Get in Touch ♡</h1>
+      <p>
+        Questions about our bakes or an existing preorder?
+        We'd love to hear from you.
+      </p>
+      <div class="heart">♡</div>
+    </section>
+
+    <section class="contact-card">
+
+      <div class="contact-grid">
+
+        <div class="contact-item">
+          <h2>GENERAL QUESTIONS</h2>
+          <p>
+            <a href="mailto:hello@heavenlyandcrumb.com">
+              hello@heavenlyandcrumb.com
+            </a>
+          </p>
+        </div>
+
+        <div class="contact-item">
+          <h2>PREORDERS & CHANGES</h2>
+          <p>
+            <a href="mailto:orders@heavenlyandcrumb.com">
+              orders@heavenlyandcrumb.com
+            </a>
+          </p>
+        </div>
+
+        <div class="contact-item">
+          <h2>CALL OR TEXT</h2>
+          <p>
+            830.309.5571
+          </p>
+        </div>
+
+        <div class="contact-item">
+          <h2>BAKED IN</h2>
+          <p>
+            Brackettville, Texas ♡
+          </p>
+        </div>
+
+      </div>
+
+      <p class="contact-note">
+        Already submitted a preorder request?
+        Please contact us instead of submitting another form
+        and we'll be happy to help. ♡
+      </p>
+
+    </section>
+
+    <div class="button-wrap">
+      <a href="order.html" class="order-button">
+        PREORDER YOUR BAKES
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    HOMEMADE • SMALL BATCH • BAKED WITH LOVE ♡
+  </footer>
+
+</body>
+</html>

@@ -500,13 +500,7 @@
         id="orderTotal"
         name="Order Total"
       >
-
-      <input
-        type="hidden"
-        name="_next"
-        value="thank-you.html"
-      >
-
+      
 
       <p class="required-note">
         Required fields must be completed before submitting your preorder.
@@ -820,67 +814,92 @@
       });
 
 
-    document
-      .getElementById("orderForm")
-      .addEventListener("submit", function(event) {
-        updateTotal();
-        updateEmailRequirement();
+    const orderForm = document.getElementById("orderForm");
+const submitButton = orderForm.querySelector(".submit-button");
 
-        const hasProducts = Array.from(
-          document.querySelectorAll(".product")
-        ).some(product => {
-          return Number(
-            product.querySelector(
-              ".quantity span"
-            ).textContent
-          ) > 0;
-        });
-
-const selectedDate = requestedDate.value;
-
-if (selectedDate && selectedDate < requestedDate.min) {
+orderForm.addEventListener("submit", async function(event) {
   event.preventDefault();
 
-  alert(
-    "Please allow at least 2 days for your preorder requests ♡"
-  );
+  updateTotal();
+  updateEmailRequirement();
 
-  requestedDate.focus();
+  const selectedDate = requestedDate.value;
 
-  return;
-}
-        
-        if (!hasProducts) {
-          event.preventDefault();
+  if (selectedDate && selectedDate < requestedDate.min) {
+    alert(
+      "Please allow at least 2 days for your preorder requests ♡"
+    );
 
-          alert(
-            "Please choose at least one bake before submitting your preorder ♡"
-          );
+    requestedDate.focus();
+    return;
+  }
 
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
+  const hasProducts = Array.from(
+    document.querySelectorAll(".product")
+  ).some(product => {
+    return Number(
+      product.querySelector(".quantity span").textContent
+    ) > 0;
+  });
 
-          return;
-        }
+  if (!hasProducts) {
+    alert(
+      "Please choose at least one bake before submitting your preorder ♡"
+    );
 
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
 
-        if (
-          emailField.required &&
-          emailField.value.trim() === ""
-        ) {
-          event.preventDefault();
+    return;
+  }
 
-          emailField.focus();
+  if (
+    emailField.required &&
+    emailField.value.trim() === ""
+  ) {
+    emailField.focus();
 
-          alert(
-            "Please enter your email address so we know where to contact you ♡"
-          );
+    alert(
+      "Please enter your email address so we know where to contact you ♡"
+    );
 
-          return;
-        }
-      });
+    return;
+  }
+
+  if (!orderForm.checkValidity()) {
+    orderForm.reportValidity();
+    return;
+  }
+
+  submitButton.disabled = true;
+  submitButton.textContent = "SUBMITTING...";
+
+  try {
+    const response = await fetch(orderForm.action, {
+      method: "POST",
+      body: new FormData(orderForm),
+      headers: {
+        "Accept": "application/json"
+      }
+    });
+
+    if (response.ok) {
+      window.location.href = "thank-you.html";
+      return;
+    }
+
+    throw new Error("Form submission failed");
+  } catch (error) {
+    submitButton.disabled = false;
+    submitButton.textContent = "SUBMIT PREORDER";
+
+    alert(
+      "Something went wrong while submitting your preorder. Please try again ♡"
+    );
+  }
+});
 
 setMinimumDate();
     updateTotal();

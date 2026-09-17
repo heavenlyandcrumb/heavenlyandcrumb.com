@@ -61,9 +61,9 @@
       text-decoration: underline;
     }
 
-    /* PAGE INTRO */
+     /* PAGE INTRO */
 
-    .story-intro {
+    .intro {
       width: min(90%, 760px);
       margin: 0 auto;
       padding: 70px 0 55px;
@@ -71,7 +71,7 @@
     }
 
     .eyebrow {
-      margin-bottom: 15px;
+      margin: 0 0 15px;
       font-family: Arial, sans-serif;
       font-size: 11px;
       font-weight: bold;
@@ -79,26 +79,26 @@
       color: rgba(27, 35, 54, 0.65);
     }
 
-    .story-intro h1 {
+    .intro h1 {
       margin: 0 0 20px;
       font-size: 48px;
       line-height: 1.1;
       font-weight: normal;
     }
 
-    .story-intro p {
+    .intro-text {
       max-width: 610px;
       margin: 0 auto;
       font-size: 18px;
       line-height: 1.7;
     }
 
-    .little-heart {
+    .heart {
       margin-top: 25px;
       font-size: 25px;
     }
 
-    /* STORY SECTIONS */
+    /* MENU */
 
     main {
       overflow: hidden;
@@ -108,43 +108,49 @@
       width: min(90%, 1050px);
       margin: 0 auto;
       padding: 55px 0;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin: 0 auto 55px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 38px;
+      line-height: 1.2;
+      font-weight: normal;
+    }
+
+    /* PRODUCT ROWS */
+
+    .story-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 65px;
       align-items: center;
+      padding: 30px 0 55px;
     }
 
-    .story-section.reverse .story-image {
+    .story-row.reverse .story-image {
       order: 2;
     }
 
-    .story-section.reverse .story-copy {
+    .story-row.reverse .story-text {
       order: 1;
     }
 
     .story-image img {
       width: 100%;
-      height: 560px;
+      height: 500px;
       object-fit: cover;
       border-radius: 22px;
       display: block;
       box-shadow: 0 8px 25px rgba(27, 35, 54, 0.08);
     }
 
-    .story-image.heart-photo img {
-      object-position: center;
-    }
-
-    .story-image.wedding-photo img {
-      object-position: center;
-    }
-
-    .story-image.heavenly-photo img {
-      object-position: center;
-    }
-
-    .photo-caption {
-      margin-top: 12px;
+    .caption {
+      margin: 12px 0 0;
       text-align: center;
       font-size: 13px;
       font-style: italic;
@@ -152,86 +158,91 @@
       color: rgba(27, 35, 54, 0.68);
     }
 
-    .section-label {
-      margin-bottom: 13px;
-      font-family: Arial, sans-serif;
-      font-size: 10px;
-      font-weight: bold;
-      letter-spacing: 2.2px;
-      color: rgba(27, 35, 54, 0.58);
+    .story-text {
+      max-width: 450px;
     }
 
-    .story-copy h2 {
+    .story-text h2 {
       margin: 0 0 22px;
       font-size: 36px;
       line-height: 1.15;
       font-weight: normal;
     }
 
-    .story-copy p {
+    .story-text p {
       margin: 0 0 18px;
       font-size: 17px;
       line-height: 1.75;
     }
 
-    /* QUOTE */
-
-    .story-quote {
-      margin: 28px 0;
-      padding: 24px 26px;
-      background: rgba(27, 35, 54, 0.055);
-      border-left: 3px solid #1B2336;
-      border-radius: 0 14px 14px 0;
-    }
-
-    .story-quote p {
-      margin: 0;
-      font-size: 25px;
-      line-height: 1.35;
-      font-style: italic;
+    .story-text strong {
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.5px;
     }
 
     /* DIVIDERS */
 
     .divider {
-      width: min(90%, 1050px);
+      position: relative;
+      width: 100%;
       height: 1px;
-      margin: 0 auto;
+      margin: 5px auto 35px;
       background: rgba(27, 35, 54, 0.12);
+      color: #1B2336;
+      font-size: 18px;
+      line-height: 1;
+      text-align: center;
     }
 
-    /* HEAVENLY SECTION */
-
-    .heavenly-section {
-      margin-top: 55px;
-      padding: 75px 0;
-      background: rgba(27, 35, 54, 0.055);
+    .divider::after {
+      content: "♡";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      padding: 0 14px;
+      background: #F8F4EC;
+      transform: translate(-50%, -50%);
     }
 
-    .heavenly-section .story-section {
-      padding-top: 0;
-      padding-bottom: 0;
+    .divider {
+      font-size: 0;
+    }
+
+    /* COMING SOON */
+
+    .story-row:not(:has(.story-image)) {
+      display: block;
+      width: min(100%, 680px);
+      margin: 0 auto;
+      padding: 55px 0 30px;
+      text-align: center;
+    }
+
+    .story-row:not(:has(.story-image)) .story-text {
+      max-width: 680px;
+      margin: 0 auto;
     }
 
     /* CLOSING */
 
-    .story-closing {
+    .closing {
       width: min(90%, 720px);
-      margin: 0 auto;
-      padding: 90px 0;
+      margin: 30px auto 0;
+      padding: 80px 0 90px;
       text-align: center;
     }
 
-    .story-closing h2 {
+    .closing h2 {
       margin: 0 0 22px;
       font-size: 38px;
       line-height: 1.2;
       font-weight: normal;
     }
 
-    .story-closing p {
-      margin: 0 auto 30px;
+    .closing > p:not(.eyebrow) {
       max-width: 620px;
+      margin: 0 auto 30px;
       font-size: 17px;
       line-height: 1.75;
     }
@@ -263,6 +274,7 @@
     /* MOBILE */
 
     @media (max-width: 700px) {
+
       header {
         padding-top: 14px;
       }
@@ -277,64 +289,104 @@
         font-size: 10px;
       }
 
-      .story-intro {
-        padding: 52px 0 32px;
+      .intro {
+        padding: 52px 0 38px;
       }
 
-      .story-intro h1 {
+      .intro h1 {
         font-size: 39px;
       }
 
-      .story-intro p {
+      .intro-text {
         font-size: 17px;
+        line-height: 1.65;
+      }
+
+      .heart {
+        margin-top: 20px;
       }
 
       .story-section {
-        padding: 42px 0;
-        grid-template-columns: 1fr;
-        gap: 28px;
+        padding: 38px 0;
       }
 
-      .story-section.reverse .story-image,
-      .story-section.reverse .story-copy {
+      .section-heading {
+        margin-bottom: 28px;
+        text-align: left;
+      }
+
+      .section-heading h2 {
+        font-size: 32px;
+      }
+
+      .story-row {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 20px 0 38px;
+      }
+
+      .story-row.reverse .story-image,
+      .story-row.reverse .story-text {
         order: initial;
       }
 
-      .story-image img {
-        height: auto;
-        max-height: 560px;
-        object-fit: cover;
+      .story-image {
+        width: 100%;
       }
 
-      .story-copy h2 {
+      .story-image img {
+        width: 100%;
+        height: auto;
+        max-height: none;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 20px;
+      }
+
+      .caption {
+        margin-top: 11px;
+        font-size: 13px;
+      }
+
+      .story-text {
+        width: 100%;
+        max-width: none;
+      }
+
+      .story-text h2 {
+        margin-bottom: 16px;
         font-size: 31px;
       }
 
-      .story-copy p {
+      .story-text p {
+        margin-bottom: 15px;
+        font-size: 16px;
+        line-height: 1.65;
+      }
+
+      .divider {
+        margin: 8px auto 28px;
+      }
+
+      .story-row:not(:has(.story-image)) {
+        width: 100%;
+        padding: 35px 0 20px;
+        text-align: left;
+      }
+
+      .closing {
+        margin-top: 10px;
+        padding: 60px 0 70px;
+      }
+
+      .closing h2 {
+        font-size: 32px;
+      }
+
+      .closing > p:not(.eyebrow) {
         font-size: 16px;
         line-height: 1.7;
-      }
-
-      .story-quote {
-        margin: 24px 0;
-        padding: 21px 22px;
-      }
-
-      .story-quote p {
-        font-size: 22px;
-      }
-
-      .heavenly-section {
-        margin-top: 30px;
-        padding: 48px 0;
-      }
-
-      .story-closing {
-        padding: 65px 0;
-      }
-
-      .story-closing h2 {
-        font-size: 32px;
       }
 
       .order-button {

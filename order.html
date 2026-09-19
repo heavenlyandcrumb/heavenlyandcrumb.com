@@ -281,6 +281,50 @@
       opacity: 0.65;
     }
 
+    .menu-helper {
+  margin: 0 0 28px;
+  padding: 14px 16px;
+  border: 1px solid rgba(27, 35, 54, 0.18);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.menu-helper div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.menu-helper strong {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  font-weight: normal;
+  color: #1B2336;
+}
+
+.menu-helper span {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.65;
+}
+
+.menu-helper-link {
+  flex-shrink: 0;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  color: #1B2336;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1px solid #1B2336;
+  padding-bottom: 2px;
+}
+
     .contactless-help {
       margin-top: 0px;
     }
@@ -422,6 +466,17 @@
         made in small batches in Brackettville, Texas.
       </p>
     </section>
+
+    <div class="menu-helper">
+  <div>
+    <strong>Not sure what to pick? ♡</strong>
+    <span>Peep our menu for photos &amp; details.</span>
+  </div>
+
+  <a href="menu.html" class="menu-helper-link">
+    VIEW THE MENU →
+  </a>
+</div>
 
 
     <h2 class="section-title">Choose Your Bakes</h2>

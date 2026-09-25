@@ -561,19 +561,21 @@
   <div class="choice-group">
     <label class="choice-card">
       <input
-        type="radio"
-        name="Pre-Slice Sourdough"
-        value="No — Leave Whole"
-      >
+  type="radio"
+  name="Pre-Slice Sourdough"
+  value="No — Leave Whole"
+  form="orderForm"
+>
       <span>Leave my loaf whole</span>
     </label>
 
     <label class="choice-card">
       <input
-        type="radio"
-        name="Pre-Slice Sourdough"
-        value="Yes — Pre-Slice"
-      >
+  type="radio"
+  name="Pre-Slice Sourdough"
+  value="Yes — Pre-Slice"
+  form="orderForm"
+>
       <span>Pre-slice my loaf</span>
     </label>
   </div>
@@ -934,9 +936,9 @@
   if (hasLoaf) {
     slicingOption.classList.add("show");
 
-    slicingChoices.forEach(option => {
-      option.required = true;
-    });
+    slicingChoices.forEach((option, index) => {
+  option.required = index === 0;
+});
   } else {
     slicingOption.classList.remove("show");
 
@@ -1101,6 +1103,26 @@ orderForm.addEventListener("invalid", function(event) {
     });
   }
 }, true);
+
+    orderForm.addEventListener("invalid", function(event) {
+  if (
+    event.target.name === "Pre-Slice Sourdough"
+  ) {
+    event.preventDefault();
+
+    alert(
+      "Please choose whether you'd like your sourdough whole or pre-sliced ♡"
+    );
+
+    document
+      .getElementById("slicingOption")
+      .scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+  }
+}, true);
+
     
 setMinimumDate();
     updateTotal();

@@ -1104,10 +1104,13 @@ orderForm.addEventListener("invalid", function(event) {
   }
 }, true);
 
-    orderForm.addEventListener("invalid", function(event) {
-  if (
-    event.target.name === "Pre-Slice Sourdough"
-  ) {
+    onst slicingChoicesForValidation =
+  document.querySelectorAll(
+    'input[name="Pre-Slice Sourdough"]'
+  );
+
+slicingChoicesForValidation.forEach(option => {
+  option.addEventListener("invalid", function(event) {
     event.preventDefault();
 
     alert(
@@ -1120,8 +1123,8 @@ orderForm.addEventListener("invalid", function(event) {
         behavior: "smooth",
         block: "center"
       });
-  }
-}, true);
+  });
+});
 
     
 setMinimumDate();

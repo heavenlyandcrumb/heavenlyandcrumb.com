@@ -586,9 +586,6 @@
 
 <div class="product-category">SIMPLY SWEET</div>
 
-
-<div class="product-category">SIMPLY SWEET</div>
-
 <div
   class="product"
   data-name="Heavenly Chocolate Chunk - 3-Pack"
@@ -916,6 +913,11 @@
   const slicingOption =
     document.getElementById("slicingOption");
 
+  const slicingChoices =
+    document.querySelectorAll(
+      'input[name="Pre-Slice Sourdough"]'
+    );
+
   const sliceableProducts =
     document.querySelectorAll(
       '.product[data-sliceable="true"]'
@@ -931,16 +933,17 @@
 
   if (hasLoaf) {
     slicingOption.classList.add("show");
+
+    slicingChoices.forEach(option => {
+      option.required = true;
+    });
   } else {
     slicingOption.classList.remove("show");
 
-    document
-      .querySelectorAll(
-        'input[name="Pre-Slice Sourdough"]'
-      )
-      .forEach(option => {
-        option.checked = false;
-      });
+    slicingChoices.forEach(option => {
+      option.required = false;
+      option.checked = false;
+    });
   }
 }
     

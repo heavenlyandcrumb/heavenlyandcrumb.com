@@ -221,6 +221,25 @@
 
     /* FORM GROUPS */
 
+    .slicing-option {
+  display: none;
+  margin: 22px 0 28px;
+}
+
+.slicing-option.show {
+  display: block;
+}
+
+.slicing-title {
+  margin-bottom: 12px;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #1B2336;
+  opacity: 0.65;
+}
+
     .form-group-title {
       margin: 34px 0 12px;
       font-family: Arial, sans-serif;
@@ -483,7 +502,7 @@
 
     <div class="product-category">ARTISAN SOURDOUGH</div>
 
-<div class="product" data-name="The Heavenly Loaf" data-price="10">
+<div class="product" data-name="The Heavenly Loaf" data-price="10" data-sliceable="true">
   <div class="product-info">
     <div class="product-name">The Heavenly Loaf</div>
     <div class="product-description">
@@ -500,7 +519,7 @@
 </div>
 
 
-<div class="product" data-name="Hellapeño Cheese™" data-price="14">
+<div class="product" data-name="Hellapeño Cheese™" data-price="14" data-sliceable="true">
   <div class="product-info">
     <div class="product-name">Hellapeño Cheese™</div>
     <div class="product-description">
@@ -517,7 +536,7 @@
 </div>
 
 
-<div class="product" data-name="Honey Oat" data-price="12">
+<div class="product" data-name="Honey Oat" data-price="12" data-sliceable="true">
   <div class="product-info">
     <div class="product-name">Honey Oat</div>
     <div class="product-description">
@@ -531,6 +550,36 @@
     <span>0</span>
     <button type="button" onclick="changeQty(this, 1)">+</button>
   </div>
+  <div id="slicingOption" class="slicing-option">
+  <div class="slicing-title">
+    WANT YOUR SOURDOUGH PRE-SLICED? ♡
+  </div>
+
+  <div class="choice-group">
+    <label class="choice-card">
+      <input
+        type="radio"
+        name="Pre-Slice Sourdough"
+        value="No — Leave Whole"
+      >
+      <span>Leave my loaf whole</span>
+    </label>
+
+    <label class="choice-card">
+      <input
+        type="radio"
+        name="Pre-Slice Sourdough"
+        value="Yes — Pre-Slice"
+      >
+      <span>Pre-slice my loaf</span>
+    </label>
+  </div>
+
+  <p class="field-help">
+    Complimentary for artisan sourdough loaves. ♡
+  </p>
+</div>
+  
 </div>
 
 
@@ -859,6 +908,38 @@
 }
 
 
+    function updateSlicingOption() {
+  const slicingOption =
+    document.getElementById("slicingOption");
+
+  const sliceableProducts =
+    document.querySelectorAll(
+      '.product[data-sliceable="true"]'
+    );
+
+  const hasLoaf = Array.from(
+    sliceableProducts
+  ).some(product => {
+    return Number(
+      product.querySelector(".quantity span").textContent
+    ) > 0;
+  });
+
+  if (hasLoaf) {
+    slicingOption.classList.add("show");
+  } else {
+    slicingOption.classList.remove("show");
+
+    document
+      .querySelectorAll(
+        'input[name="Pre-Slice Sourdough"]'
+      )
+      .forEach(option => {
+        option.checked = false;
+      });
+  }
+}
+    
     function changeQty(button, amount) {
       const quantity = button.parentElement;
       const number = quantity.querySelector("span");
@@ -870,6 +951,7 @@
 
       updateTotal();
       updateProductValidation();
+      updateSlicingOption();
     }
 
 
@@ -1017,6 +1099,7 @@ setMinimumDate();
     updateTotal();
     updateEmailRequirement();
     updateProductValidation();
+    updateSlicingOption();
     
     requestedDate.addEventListener("invalid", function() {
   if (requestedDate.validity.rangeUnderflow) {

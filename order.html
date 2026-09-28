@@ -897,6 +897,13 @@
   <script>
     const requestedDate = document.getElementById("requestedDate");
     const emailField = document.getElementById("email");
+    const blackoutDates = [
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-03",
+      "2026-10-04",
+      ];
+      
 
     function setMinimumDate() {
   const minimumDate = new Date();
@@ -1143,6 +1150,14 @@ setMinimumDate();
 
 requestedDate.addEventListener("input", function() {
   requestedDate.setCustomValidity("");
+
+  if (blackoutDates.includes(requestedDate.value)) {
+    requestedDate.setCustomValidity(
+      "Heavenly & Crumb is unavailable for preorders on this date. Please choose another date ♡"
+    );
+
+    requestedDate.reportValidity();
+  }
 });
   </script>
 

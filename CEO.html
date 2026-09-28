@@ -162,22 +162,22 @@
 
     <div class="stat-card">
       <span class="stat-label">UPCOMING ORDERS</span>
-      <strong class="stat-number">4</strong>
+      <strong class="stat-number" id="upcomingCount">0</strong>
     </div>
 
     <div class="stat-card">
       <span class="stat-label">EXPECTED SALES</span>
-      <strong class="stat-number">$87</strong>
+      <strong class="stat-number" id="expectedSales">$0</strong>
     </div>
 
     <div class="stat-card">
       <span class="stat-label">NEXT BAKE DAY</span>
-      <strong class="stat-number stat-date">OCT 5</strong>
+      <strong class="stat-number stat-date" id="nextBakeDay">—</strong>
     </div>
 
     <div class="stat-card">
       <span class="stat-label">ITEMS TO BAKE</span>
-      <strong class="stat-number">11</strong>
+      <strong class="stat-number" id="itemsToBake">0</strong>
     </div>
 
   </div>
@@ -218,6 +218,77 @@
     </footer>
 
   </main>
+
+  <script>
+  const orders = [];
+
+  function updateOverview() {
+    const upcomingCount =
+      document.getElementById("upcomingCount");
+
+    const expectedSales =
+      document.getElementById("expectedSales");
+
+    const nextBakeDay =
+      document.getElementById("nextBakeDay");
+
+    const itemsToBake =
+      document.getElementById("itemsToBake");
+
+    const activeOrders = orders.filter(order => {
+      return order.status !== "Complete";
+    });
+
+    const totalSales = activeOrders.reduce(
+      (total, order) => total + order.total,
+      0
+    );
+
+    const totalItems = activeOrders.reduce(
+      (total, order) => {
+        return total + order.items.reduce(
+          (itemTotal, item) =>
+            itemTotal + item.quantity,
+          0
+        );
+      },
+      0
+    );
+
+    const sortedOrders = [...activeOrders].sort(
+      (a, b) =>
+        new Date(a.requestedDate) -
+        new Date(b.requestedDate)
+    );
+
+    upcomingCount.textContent =
+      activeOrders.length;
+
+    expectedSales.textContent =
+      "$" + totalSales.toFixed(2).replace(".00", "");
+
+    itemsToBake.textContent =
+      totalItems;
+
+    if (sortedOrders.length > 0) {
+      const nextDate = new Date(
+        sortedOrders[0].requestedDate + "T12:00:00"
+      );
+
+      nextBakeDay.textContent =
+        nextDate
+          .toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric"
+          })
+          .toUpperCase();
+    } else {
+      nextBakeDay.textContent = "—";
+    }
+  }
+
+  updateOverview();
+</script>
 
 </body>
 

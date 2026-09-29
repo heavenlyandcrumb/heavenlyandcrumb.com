@@ -109,6 +109,99 @@
       padding: 18px;
     }
 
+
+    .orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.order-card {
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(27, 35, 54, 0.12);
+  border-radius: 14px;
+}
+
+.order-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.order-date {
+  margin: 0 0 5px;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 1.4px;
+  opacity: 0.55;
+}
+
+.order-customer {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: 21px;
+  font-weight: normal;
+}
+
+.order-total {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  white-space: nowrap;
+}
+
+.order-items {
+  margin: 16px 0;
+  padding: 14px 0;
+  border-top: 1px solid rgba(27, 35, 54, 0.10);
+  border-bottom: 1px solid rgba(27, 35, 54, 0.10);
+}
+
+.order-item {
+  margin: 4px 0;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.order-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.order-tag {
+  padding: 6px 8px;
+  border: 1px solid rgba(27, 35, 54, 0.14);
+  border-radius: 999px;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.order-status {
+  background: #1B2336;
+  color: #F8F4EC;
+  border-color: #1B2336;
+}
+
+.empty-orders {
+  margin: 0;
+  padding: 24px 18px;
+  background: #ffffff;
+  border: 1px solid rgba(27, 35, 54, 0.12);
+  border-radius: 14px;
+  text-align: center;
+  font-family: Georgia, serif;
+  font-size: 15px;
+  font-style: italic;
+  opacity: 0.65;
+}
+    
     .placeholder {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -184,14 +277,11 @@
 </section>
 
     <section class="section">
-      <h2 class="section-title">UPCOMING ORDERS</h2>
+  <h2 class="section-title">UPCOMING ORDERS</h2>
 
-      <div class="card">
-        <p class="placeholder">
-          Upcoming preorder requests will live here.
-        </p>
-      </div>
-    </section>
+  <div id="ordersList" class="orders-list"></div>
+</section>
+
 
     <section class="section">
       <h2 class="section-title">PRODUCTION</h2>
@@ -244,6 +334,95 @@
   }
 ];
 
+    function renderOrders() {
+  const ordersList =
+    document.getElementById("ordersList");
+
+  const activeOrders = orders
+    .filter(order => {
+      return order.status !== "Complete";
+    })
+    .sort((a, b) => {
+      return (
+        new Date(a.requestedDate) -
+        new Date(b.requestedDate)
+      );
+    });
+
+  if (activeOrders.length === 0) {
+    ordersList.innerHTML =
+      '<p class="empty-orders">No upcoming orders. ♡</p>';
+
+    return;
+  }
+
+  ordersList.innerHTML = activeOrders
+    .map(order => {
+      const requestedDate = new Date(
+        order.requestedDate + "T12:00:00"
+      );
+
+      const formattedDate =
+        requestedDate
+          .toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric"
+          })
+          .toUpperCase();
+
+      const items = order.items
+        .map(item => {
+          return `
+            <p class="order-item">
+              ${item.name} ×${item.quantity}
+            </p>
+          `;
+        })
+        .join("");
+
+      return `
+        <article class="order-card">
+
+          <div class="order-top">
+            <div>
+              <p class="order-date">
+                ${formattedDate}
+              </p>
+
+              <h3 class="order-customer">
+                ${order.customer}
+              </h3>
+            </div>
+
+            <div class="order-total">
+              $${order.total.toFixed(2).replace(".00", "")}
+            </div>
+          </div>
+
+          <div class="order-items">
+            ${items}
+          </div>
+
+          <div class="order-details">
+            <span class="order-tag">
+              ${order.orderMethod}
+            </span>
+
+            <span class="order-tag">
+              ${order.slicing}
+            </span>
+
+            <span class="order-tag order-status">
+              ${order.status}
+            </span>
+          </div>
+
+        </article>
+      `;
+    })
+    .join("");
+}
+    
   function updateOverview() {
     const upcomingCount =
       document.getElementById("upcomingCount");
@@ -310,6 +489,7 @@
   }
 
   updateOverview();
+    renderOrders();
 </script>
 
 </body>

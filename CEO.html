@@ -861,6 +861,16 @@ function changeOrderStatus(orderId, newStatus) {
 
   order.status = newStatus;
 
+  localStorage.setItem(
+    "hcOrderStatuses",
+    JSON.stringify(
+      orders.map(order => ({
+        id: order.id,
+        status: order.status
+      }))
+      )
+    );
+
   updateOverview();
   renderOrders();
   renderProduction();
@@ -936,6 +946,21 @@ function changeOrderStatus(orderId, newStatus) {
     }
   }
 
+const savedStatuses =
+  JSON.parse(
+    localStorage.getItem("hcOrderStatuses") || "[]"
+  );
+
+savedStatuses.forEach(savedOrder => {
+  const order = orders.find(order => {
+    return order.id === savedOrder.id;
+  });
+
+  if (order) {
+    order.status = savedOrder.status;
+  }
+});
+    
   updateOverview();
     renderOrders();
     renderProduction();

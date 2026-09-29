@@ -842,62 +842,6 @@ function renderArchive() {
     .join("");
 }
 
-
-  managementList.innerHTML = orders
-    .map(order => {
-      const statuses = [
-        "Confirmed",
-        "Baking",
-        "Complete",
-        "Archive"
-      ];
-
-      const buttons = statuses
-        .map(status => {
-          const activeClass =
-            order.status === status
-              ? " active"
-              : "";
-
-          return `
-            <button
-              type="button"
-              class="status-button${activeClass}"
-              onclick="changeOrderStatus('${order.id}', '${status}')"
-            >
-              ${status}
-            </button>
-          `;
-        })
-        .join("");
-
-      return `
-        <div class="management-card">
-          <div class="management-top">
-            <div>
-              <p class="management-id">
-                ${order.id}
-              </p>
-
-              <h3 class="management-customer">
-                ${order.customer}
-              </h3>
-            </div>
-
-            <span class="management-status">
-              ${order.status}
-            </span>
-          </div>
-
-          <div class="status-buttons">
-            ${buttons}
-          </div>
-        </div>
-      `;
-    })
-    .join("");
-}
-
 function changeOrderStatus(orderId, newStatus) {
   const order = orders.find(order => {
     return order.id === orderId;

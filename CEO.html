@@ -713,12 +713,135 @@ items: [
   const managementList =
     document.getElementById("managementList");
 
-  if (orders.length === 0) {
+  const managementOrders = orders.filter(order => {
+    return order.status !== "Archive";
+  });
+
+  if (managementOrders.length === 0) {
     managementList.innerHTML =
       '<p class="empty-management">No orders to manage. ♡</p>';
 
     return;
   }
+
+  managementList.innerHTML = managementOrders
+    .map(order => {
+      const statuses = [
+        "Confirmed",
+        "Baking",
+        "Complete",
+        "Archive"
+      ];
+
+      const buttons = statuses
+        .map(status => {
+          const activeClass =
+            order.status === status
+              ? " active"
+              : "";
+
+          return `
+            <button
+              type="button"
+              class="status-button${activeClass}"
+              onclick="changeOrderStatus('${order.id}', '${status}')"
+            >
+              ${status}
+            </button>
+          `;
+        })
+        .join("");
+
+      return `
+        <div class="management-card">
+          <div class="management-top">
+            <div>
+              <p class="management-id">
+                ${order.id}
+              </p>
+
+              <h3 class="management-customer">
+                ${order.customer}
+              </h3>
+            </div>
+
+            <span class="management-status">
+              ${order.status}
+            </span>
+          </div>
+
+          <div class="status-buttons">
+            ${buttons}
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function renderArchive() {
+  const archiveList =
+    document.getElementById("archiveList");
+
+  const archivedOrders = orders.filter(order => {
+    return order.status === "Archive";
+  });
+
+  if (archivedOrders.length === 0) {
+    archiveList.innerHTML =
+      '<p class="empty-management">No archived orders. ♡</p>';
+
+    return;
+  }
+
+  archiveList.innerHTML = archivedOrders
+    .map(order => {
+      const requestedDate = new Date(
+        order.requestedDate + "T12:00:00"
+      );
+
+      const formattedDate =
+        requestedDate
+          .toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+          })
+          .toUpperCase();
+
+      return `
+        <div class="management-card">
+          <div class="management-top">
+            <div>
+              <p class="management-id">
+                ${order.id} • ${formattedDate}
+              </p>
+
+              <h3 class="management-customer">
+                ${order.customer}
+              </h3>
+            </div>
+
+            <span class="management-status">
+              ARCHIVED
+            </span>
+          </div>
+
+          <div class="order-details">
+            <span class="order-tag">
+              ${order.orderMethod}
+            </span>
+
+            <span class="order-tag">
+              $${order.total.toFixed(2).replace(".00", "")}
+            </span>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
 
   managementList.innerHTML = orders
     .map(order => {
@@ -790,6 +913,7 @@ function changeOrderStatus(orderId, newStatus) {
   renderOrders();
   renderProduction();
   renderManagement();
+  renderArchive();
 }
 
   function updateOverview() {
@@ -864,6 +988,7 @@ function changeOrderStatus(orderId, newStatus) {
     renderOrders();
     renderProduction();
     renderManagement();
+    renderArchive();
 </script>
 
 </body>

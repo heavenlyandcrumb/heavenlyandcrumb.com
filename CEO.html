@@ -308,6 +308,36 @@
   border-color: #1B2336;
 }
 
+    .archive-toggle {
+  width: 100%;
+  padding: 0 0 12px;
+  border: none;
+  background: transparent;
+  color: #1B2336;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  opacity: 0.65;
+  cursor: pointer;
+}
+
+.archive-list {
+  display: none;
+}
+
+.archive-list.show {
+  display: flex;
+}
+
+#archiveArrow {
+  font-size: 18px;
+  line-height: 1;
+}
+
 .empty-management {
   margin: 0;
   padding: 24px 18px;
@@ -441,11 +471,21 @@
 </section>
 
     <section class="section">
-      <h2 class="section-title">ARCHIVE</h2>
+  <button
+    type="button"
+    class="archive-toggle"
+    id="archiveToggle"
+    onclick="toggleArchive()"
+  >
+    <span id="archiveTitle">ARCHIVE · 0 ORDERS</span>
+    <span id="archiveArrow">⌄</span>
+  </button>
 
-      <div id="archiveList" class="management-list"></div>
-    </section>
-
+  <div
+    id="archiveList"
+    class="management-list archive-list"
+  ></div>
+</section>
 
     <footer class="internal-footer">
       HEAVENLY &amp; CRUMB • CEO EYES ONLY ♡
@@ -787,6 +827,16 @@ function renderArchive() {
     return order.status === "Archive";
   });
 
+  const archiveTitle =
+  document.getElementById("archiveTitle");
+
+archiveTitle.textContent =
+  `ARCHIVE · ${archivedOrders.length} ${
+    archivedOrders.length === 1
+      ? "ORDER"
+      : "ORDERS"
+  }`;
+
   if (archivedOrders.length === 0) {
     archiveList.innerHTML =
       '<p class="empty-management">No archived orders. ♡</p>';
@@ -848,6 +898,20 @@ function renderArchive() {
       `;
     })
     .join("");
+}
+
+    function toggleArchive() {
+  const archiveList =
+    document.getElementById("archiveList");
+
+  const archiveArrow =
+    document.getElementById("archiveArrow");
+
+  const isOpen =
+    archiveList.classList.toggle("show");
+
+  archiveArrow.textContent =
+    isOpen ? "⌃" : "⌄";
 }
 
 function changeOrderStatus(orderId, newStatus) {

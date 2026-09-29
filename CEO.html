@@ -237,6 +237,90 @@
   font-size: 23px;
 }
 
+    .management-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.management-card {
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(27, 35, 54, 0.12);
+  border-radius: 14px;
+}
+
+.management-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.management-id {
+  margin: 0 0 5px;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 1.4px;
+  opacity: 0.55;
+}
+
+.management-customer {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: 19px;
+  font-weight: normal;
+}
+
+.management-status {
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.status-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.status-button {
+  padding: 10px 5px;
+  border: 1px solid rgba(27, 35, 54, 0.18);
+  border-radius: 999px;
+  background: transparent;
+  color: #1B2336;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.status-button.active {
+  background: #1B2336;
+  color: #F8F4EC;
+  border-color: #1B2336;
+}
+
+.empty-management {
+  margin: 0;
+  padding: 24px 18px;
+  background: #ffffff;
+  border: 1px solid rgba(27, 35, 54, 0.12);
+  border-radius: 14px;
+  text-align: center;
+  font-family: Georgia, serif;
+  font-size: 15px;
+  font-style: italic;
+  opacity: 0.65;
+}
+
 .empty-production {
   margin: 0;
   padding: 24px 18px;
@@ -350,15 +434,12 @@
   <div id="productionList" class="production-list"></div>
 </section>
 
-    <section class="section">
-      <h2 class="section-title">ORDER MANAGEMENT</h2>
+      <section class="section">
+  <h2 class="section-title">ORDER MANAGEMENT</h2>
 
-      <div class="card">
-        <p class="placeholder">
-          Order statuses and CEO controls will live here.
-        </p>
-      </div>
-    </section>
+  <div id="managementList" class="management-list"></div>
+</section>
+
 
     <footer class="internal-footer">
       HEAVENLY &amp; CRUMB • CEO EYES ONLY ♡
@@ -616,6 +697,88 @@ items: [
   `;
 }
 
+    function renderManagement() {
+  const managementList =
+    document.getElementById("managementList");
+
+  if (orders.length === 0) {
+    managementList.innerHTML =
+      '<p class="empty-management">No orders to manage. ♡</p>';
+
+    return;
+  }
+
+  managementList.innerHTML = orders
+    .map(order => {
+      const statuses = [
+        "Confirmed",
+        "Baking",
+        "Complete"
+      ];
+
+      const buttons = statuses
+        .map(status => {
+          const activeClass =
+            order.status === status
+              ? " active"
+              : "";
+
+          return `
+            <button
+              type="button"
+              class="status-button${activeClass}"
+              onclick="changeOrderStatus('${order.id}', '${status}')"
+            >
+              ${status}
+            </button>
+          `;
+        })
+        .join("");
+
+      return `
+        <div class="management-card">
+          <div class="management-top">
+            <div>
+              <p class="management-id">
+                ${order.id}
+              </p>
+
+              <h3 class="management-customer">
+                ${order.customer}
+              </h3>
+            </div>
+
+            <span class="management-status">
+              ${order.status}
+            </span>
+          </div>
+
+          <div class="status-buttons">
+            ${buttons}
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function changeOrderStatus(orderId, newStatus) {
+  const order = orders.find(order => {
+    return order.id === orderId;
+  });
+
+  if (!order) {
+    return;
+  }
+
+  order.status = newStatus;
+
+  updateOverview();
+  renderOrders();
+  renderProduction();
+  renderManagement();
+}
+
   function updateOverview() {
     const upcomingCount =
       document.getElementById("upcomingCount");
@@ -684,6 +847,7 @@ items: [
   updateOverview();
     renderOrders();
     renderProduction();
+    renderManagement();
 </script>
 
 </body>

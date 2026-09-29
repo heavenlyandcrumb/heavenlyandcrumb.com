@@ -513,7 +513,7 @@ items: [
   const activeOrders = orders
     .filter(order => {
       return order.status !== "Complete" &&
-        order.ststus !== "Archive"
+        order.status !== "Archive"
         );
     })
     .sort((a, b) => {

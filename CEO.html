@@ -512,7 +512,8 @@ items: [
 
   const activeOrders = orders
     .filter(order => {
-      return order.status !== "Complete" &&
+      return (
+        order.status !== "Complete" &&
         order.status !== "Archive"
         );
     })
@@ -603,7 +604,10 @@ items: [
     document.getElementById("productionList");
 
   const activeOrders = orders.filter(order => {
-    return order.status !== "Complete";
+    return (
+      order.status !== "Complete" &&
+      order.status !== "Archive"
+      );
   });
 
   if (activeOrders.length === 0) {
@@ -796,7 +800,10 @@ function changeOrderStatus(orderId, newStatus) {
       document.getElementById("itemsToBake");
 
     const activeOrders = orders.filter(order => {
-      return order.status !== "Complete";
+      return (
+        order.status !== "Complete" &&
+        order.status !== "Archive"
+        );
     });
 
     const totalSales = activeOrders.reduce(

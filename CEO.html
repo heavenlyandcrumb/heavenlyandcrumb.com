@@ -166,6 +166,30 @@
   line-height: 1.5;
 }
 
+     .order-contact {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  background: #F8F4EC;
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.order-contact a {
+  color: #1B2336;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.order-contact-label {
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
 .order-details {
   display: flex;
   flex-wrap: wrap;
@@ -593,6 +617,40 @@ async function loadOrders() {
 
           <div class="order-items">
             ${items}
+          </div>
+
+           <div class="order-contact">
+            <div>
+              <span class="order-contact-label">CONTACT VIA</span>
+              ${order.contactMethod || "Not specified"}
+            </div>
+
+            <div>
+              <span class="order-contact-label">PHONE</span>
+              <a href="tel:${order.phone || ""}">
+                ${order.phone || "Not provided"}
+              </a>
+            </div>
+
+            <div>
+              <span class="order-contact-label">EMAIL</span>
+              ${
+                order.email
+                  ? `<a href="mailto:${order.email}">${order.email}</a>`
+                  : "Not provided"
+              }
+            </div>
+
+            ${
+              order.notes
+                ? `
+                  <div>
+                    <span class="order-contact-label">NOTES</span>
+                    ${order.notes}
+                  </div>
+                `
+                : ""
+            }
           </div>
 
           <div class="order-details">

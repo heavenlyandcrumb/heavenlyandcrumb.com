@@ -1162,18 +1162,125 @@ requestedDate.addEventListener("input", function() {
   </script>
 
   <script>
-  window.formspree =
-    window.formspree ||
-    function () {
-      (formspree.q = formspree.q || []).push(arguments);
-    };
+  orderForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-  formspree("initForm", {
-    formElement: "#orderForm",
-    formId: "xjykvvod",
+    const submitButton =
+      orderForm.querySelector(".submit-button");
 
-    onSuccess: function() {
-      window.location.href = "thank-you.html";
+    submitButton.disabled = true;
+    submitButton.textContent = "SUBMITTING...";
+
+    try {
+      const selectedContact =
+        document.querySelector(
+          'input[name="Preferred Contact Method"]:checked'
+        );
+
+      const selectedOrderMethod =
+        document.querySelector(
+          'input[name="Order Method"]:checked'
+        );
+
+      const selectedSlicing =
+        document.querySelector(
+          'input[name="Pre-Slice Sourdough"]:checked'
+        );
+
+      const items = [];
+
+      document
+        .querySelectorAll(".product[data-name][data-price]")
+        .forEach(product => {
+          const quantity = Number(
+            product.querySelector(
+              ".quantity span"
+            ).textContent
+          );
+
+          if (quantity > 0) {
+            items.push({
+              name: product.dataset.name,
+              quantity: quantity
+            });
+          }
+        });
+
+      const turnstileToken =
+        orderForm.querySelector(
+          '[name="cf-turnstile-response"]'
+        )?.value;
+
+      const preorder = {
+        name:
+          document.getElementById("name").value.trim(),
+
+        phone:
+          document.getElementById("phone").value.trim(),
+
+        email:
+          document.getElementById("email").value.trim(),
+
+        preferredContact:
+          selectedContact?.value || "",
+
+        requestedDate:
+          requestedDate.value,
+
+        orderMethod:
+          selectedOrderMethod?.value || "",
+
+        slicing:
+          selectedSlicing?.value || "",
+
+        notes:
+          document.getElementById("notes").value.trim(),
+
+        items: items,
+
+        turnstileToken: turnstileToken || ""
+      };
+
+      const response = await fetch(
+        "/api/preorder",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(preorder)
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.error ||
+          "Preorder submission failed"
+        );
+      }
+
+      window.location.href =
+        "thank-you.html";
+
+    } catch (error) {
+      console.error(
+        "Could not submit preorder:",
+        error
+      );
+
+      alert(
+        "We couldn't submit your preorder. Please try again ♡"
+      );
+
+      submitButton.disabled = false;
+      submitButton.textContent =
+        "SUBMIT PREORDER";
+
+      if (window.turnstile) {
+        turnstile.reset();
+      }
     }
   });
 </script>

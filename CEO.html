@@ -494,63 +494,34 @@
   </main>
 
   <script>
- const orders = [
-   {
-    id: "TEST-001",
-    customer: "Test Customer A",
-    requestedDate: "2026-10-05",
-    contactMethod: "Text Message",
-    orderMethod: "Brackettville Pickup",
-    slicing: "Yes — Pre-Slice",
-    status: "Confirmed",
-    total: 113,
+ let orders = [];
 
-items: [
-  {
-    name: "The Heavenly Loaf",
-    quantity: 3
-  },
-  {
-    name: "Hellapeño Cheese™",
-    quantity: 2
-  },
-  {
-    name: "Honey Oat",
-    quantity: 2
-  },
-  {
-    name: "Heavenly Chocolate Chunk — Dozen",
-    quantity: 2
+async function loadOrders() {
+  try {
+    const response = await fetch("/api/orders");
+
+    if (!response.ok) {
+      throw new Error(
+        `Order API returned ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    orders = data.orders || [];
+
+    updateOverview();
+    renderOrders();
+    renderProduction();
+    renderManagement();
+    renderArchive();
+  } catch (error) {
+    console.error(
+      "Could not load Heavenly & Crumb orders:",
+      error
+    );
   }
-]
- },
-
-  {
-    id: "TEST-002",
-    customer: "Test Customer B",
-    requestedDate: "2026-10-06",
-    contactMethod: "Email",
-    orderMethod: "Del Rio Delivery",
-    slicing: "No — Leave Whole",
-    status: "Confirmed",
-    total: 65,
-
-    items: [
-      {
-        name: "Hellapeño Cheese™",
-        quantity: 2
-      },
-      {
-        name: "Honey Oat",
-        quantity: 1
-      },
-      {
-        name: "Heavenly Chocolate Chunk — Dozen",
-        quantity: 1
-      }
-    ]
-  }
-];
+}
 
     function renderOrders() {
   const ordersList =
@@ -914,26 +885,47 @@ archiveTitle.textContent =
     isOpen ? "⌃" : "⌄";
 }
 
-function changeOrderStatus(orderId, newStatus) {
-  const order = orders.find(order => {
-    return order.id === orderId;
-  });
+async function changeOrderStatus(orderId, newStatus) {
+  try {
+    const response = await fetch("/api/orders", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        orderId: orderId,
+        status: newStatus
+      })
+    });
 
-  if (!order) {
-    return;
-  }
+    if (!response.ok) {
+      throw new Error(
+        `Order API returned ${response.status}`
+      );
+    }
 
-  order.status = newStatus;
+    const data = await response.json();
 
-  localStorage.setItem(
-    "hcOrderStatuses",
-    JSON.stringify(
-      orders.map(order => ({
-        id: order.id,
-        status: order.status
-      }))
-      )
+    if (!data.success) {
+      throw new Error(
+        data.error || "Status update failed"
+      );
+    }
+
+    await loadOrders();
+
+  } catch (error) {
+    console.error(
+      "Could not update order status:",
+      error
     );
+
+    alert(
+      "Could not update the order status. Please try again ♡"
+    );
+  }
+}
+
 
   updateOverview();
   renderOrders();
@@ -1010,26 +1002,8 @@ function changeOrderStatus(orderId, newStatus) {
     }
   }
 
-const savedStatuses =
-  JSON.parse(
-    localStorage.getItem("hcOrderStatuses") || "[]"
-  );
-
-savedStatuses.forEach(savedOrder => {
-  const order = orders.find(order => {
-    return order.id === savedOrder.id;
-  });
-
-  if (order) {
-    order.status = savedOrder.status;
-  }
-});
+loadOrders();
     
-  updateOverview();
-    renderOrders();
-    renderProduction();
-    renderManagement();
-    renderArchive();
 </script>
 
 </body>

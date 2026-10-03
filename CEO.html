@@ -332,6 +332,22 @@
   border-color: #1B2336;
 }
 
+    .edit-order-button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 11px 12px;
+  border: 1px solid #1B2336;
+  border-radius: 999px;
+  background: #1B2336;
+  color: #F8F4EC;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
     .archive-toggle {
   width: 100%;
   padding: 0 0 12px;
@@ -839,6 +855,14 @@ async function loadOrders() {
             </span>
           </div>
 
+          <button
+            type="button"
+            class="edit-order-button"
+            onclick="openOrderEditor('${order.id}')"
+          >
+            EDIT ORDER
+          </button>
+
           <div class="status-buttons">
             ${buttons}
           </div>
@@ -941,6 +965,22 @@ archiveTitle.textContent =
 
   archiveArrow.textContent =
     isOpen ? "⌃" : "⌄";
+}
+
+    function openOrderEditor(orderId) {
+  const order = orders.find(order => {
+    return order.id === orderId;
+  });
+
+  if (!order) {
+    alert("Could not find that order ♡");
+    return;
+  }
+
+  console.log(
+    "Opening order editor:",
+    order
+  );
 }
 
 async function changeOrderStatus(orderId, newStatus) {

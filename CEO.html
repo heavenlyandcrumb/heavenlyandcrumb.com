@@ -333,17 +333,16 @@
 }
 
     .edit-order-button {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 11px 12px;
-  border: 1px solid #1B2336;
+  margin-top: 7px;
+  padding: 6px 12px;
+  border: 1px solid rgba(27, 35, 54, 0.22);
   border-radius: 999px;
-  background: #1B2336;
-  color: #F8F4EC;
+  background: transparent;
+  color: #1B2336;
   font-family: Arial, sans-serif;
   font-size: 8px;
   font-weight: bold;
-  letter-spacing: 0.9px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   cursor: pointer;
 }
@@ -850,18 +849,20 @@ async function loadOrders() {
               </h3>
             </div>
 
-            <span class="management-status">
-              ${order.status}
-            </span>
-          </div>
+            <div>
+              <div class="management-status">
+                ${order.status}
+              </div>
 
-          <button
-            type="button"
-            class="edit-order-button"
-            onclick="openOrderEditor('${order.id}')"
-          >
-            EDIT ORDER
-          </button>
+              <button
+                type="button"
+                class="edit-order-button"
+                onclick="openOrderEditor('${order.id}')"
+              >
+                EDIT
+              </button>
+            </div>
+          </div>
 
           <div class="status-buttons">
             ${buttons}

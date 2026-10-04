@@ -347,6 +347,107 @@
   cursor: pointer;
 }
 
+    .order-editor {
+  display: none;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(27, 35, 54, 0.10);
+}
+
+.order-editor.show {
+  display: block;
+}
+
+.editor-heading {
+  margin: 0 0 14px;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 1.4px;
+  opacity: 0.55;
+}
+
+.editor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.editor-field-full {
+  grid-column: 1 / -1;
+}
+
+.editor-label {
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+.editor-input,
+.editor-select,
+.editor-textarea {
+  width: 100%;
+  padding: 10px 11px;
+  border: 1px solid rgba(27, 35, 54, 0.16);
+  border-radius: 9px;
+  background: #F8F4EC;
+  color: #1B2336;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  outline: none;
+}
+
+.editor-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.editor-action-button {
+  padding: 8px 14px;
+  border: 1px solid rgba(27, 35, 54, 0.22);
+  border-radius: 999px;
+  background: transparent;
+  color: #1B2336;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.editor-action-button.primary {
+  background: #1B2336;
+  color: #F8F4EC;
+  border-color: #1B2336;
+}
+
+@media (max-width: 600px) {
+  .editor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-field-full {
+    grid-column: auto;
+  }
+}
+
     .archive-toggle {
   width: 100%;
   padding: 0 0 12px;
@@ -864,8 +965,191 @@ async function loadOrders() {
             </div>
           </div>
 
-          <div class="status-buttons">
+            <div class="status-buttons">
             ${buttons}
+          </div>
+
+          <div
+            class="order-editor"
+            id="editor-${order.id}"
+          >
+            <p class="editor-heading">
+              EDIT ORDER • ${order.id}
+            </p>
+
+            <div class="editor-grid">
+
+              <label class="editor-field">
+                <span class="editor-label">
+                  Customer Name
+                </span>
+
+                <input
+                  type="text"
+                  class="editor-input"
+                  id="edit-name-${order.id}"
+                  value="${order.customer || ""}"
+                >
+              </label>
+
+              <label class="editor-field">
+                <span class="editor-label">
+                  Requested Date
+                </span>
+
+                <input
+                  type="date"
+                  class="editor-input"
+                  id="edit-date-${order.id}"
+                  value="${order.requestedDate || ""}"
+                >
+              </label>
+
+              <label class="editor-field">
+                <span class="editor-label">
+                  Phone
+                </span>
+
+                <input
+                  type="tel"
+                  class="editor-input"
+                  id="edit-phone-${order.id}"
+                  value="${order.phone || ""}"
+                >
+              </label>
+
+              <label class="editor-field">
+                <span class="editor-label">
+                  Email
+                </span>
+
+                <input
+                  type="email"
+                  class="editor-input"
+                  id="edit-email-${order.id}"
+                  value="${order.email || ""}"
+                >
+              </label>
+
+              <label class="editor-field">
+                <span class="editor-label">
+                  Preferred Contact
+                </span>
+
+                <select
+                  class="editor-select"
+                  id="edit-contact-${order.id}"
+                >
+                  <option
+                    value="Text Message"
+                    ${order.contactMethod === "Text Message" ? "selected" : ""}
+                  >
+                    Text Message
+                  </option>
+
+                  <option
+                    value="Email"
+                    ${order.contactMethod === "Email" ? "selected" : ""}
+                  >
+                    Email
+                  </option>
+
+                  <option
+                    value="Phone Call"
+                    ${order.contactMethod === "Phone Call" ? "selected" : ""}
+                  >
+                    Phone Call
+                  </option>
+                </select>
+              </label>
+
+              <label class="editor-field">
+                <span class="editor-label">
+                  Order Method
+                </span>
+
+                <select
+                  class="editor-select"
+                  id="edit-method-${order.id}"
+                >
+                  <option
+                    value="Brackettville Pickup"
+                    ${order.orderMethod === "Brackettville Pickup" ? "selected" : ""}
+                  >
+                    Brackettville Pickup
+                  </option>
+
+                  <option
+                    value="Brackettville Delivery"
+                    ${order.orderMethod === "Brackettville Delivery" ? "selected" : ""}
+                  >
+                    Brackettville Delivery
+                  </option>
+
+                  <option
+                    value="Del Rio Delivery"
+                    ${order.orderMethod === "Del Rio Delivery" ? "selected" : ""}
+                  >
+                    Del Rio Delivery
+                  </option>
+                </select>
+              </label>
+
+              <label class="editor-field editor-field-full">
+                <span class="editor-label">
+                  Slicing
+                </span>
+
+                <select
+                  class="editor-select"
+                  id="edit-slicing-${order.id}"
+                >
+                  <option
+                    value="No — Leave Whole"
+                    ${order.slicing === "No — Leave Whole" ? "selected" : ""}
+                  >
+                    No — Leave Whole
+                  </option>
+
+                  <option
+                    value="Yes — Pre-Slice"
+                    ${order.slicing === "Yes — Pre-Slice" ? "selected" : ""}
+                  >
+                    Yes — Pre-Slice
+                  </option>
+                </select>
+              </label>
+
+              <label class="editor-field editor-field-full">
+                <span class="editor-label">
+                  Notes
+                </span>
+
+                <textarea
+                  class="editor-textarea"
+                  id="edit-notes-${order.id}"
+                >${order.notes || ""}</textarea>
+              </label>
+
+            </div>
+
+            <div class="editor-actions">
+              <button
+                type="button"
+                class="editor-action-button"
+                onclick="closeOrderEditor('${order.id}')"
+              >
+                CANCEL
+              </button>
+
+              <button
+                type="button"
+                class="editor-action-button primary"
+                disabled
+              >
+                SAVE CHANGES
+              </button>
+            </div>
           </div>
         </div>
       `;

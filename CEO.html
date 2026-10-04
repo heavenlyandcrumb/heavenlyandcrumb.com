@@ -441,6 +441,26 @@
   border-top: none;
 }
 
+  .editor-add-product {
+  width: 100%;
+  margin-top: 10px;
+  padding: 9px 12px;
+  border: 1px dashed rgba(27, 35, 54, 0.25);
+  border-radius: 9px;
+  background: transparent;
+  color: #1B2336;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.editor-add-product:hover {
+  background: rgba(27, 35, 54, 0.04);
+}
+
 .editor-product-name {
   font-family: Arial, sans-serif;
   font-size: 12px;
@@ -1167,11 +1187,19 @@ async function loadOrders() {
               </label>
 
               <div class="editor-products">
-              <p class="editor-products-heading">
-              Products & Quantities
-              </p>
+                <p class="editor-products-heading">
+                  Products & Quantities
+                </p>
 
-              ${productRows}
+                ${productRows}
+
+                <button
+                  type="button"
+                  class="editor-add-product"
+                  onclick="addProductToEditor('${order.id}')"
+                >
+                  + ADD PRODUCT
+                </button>
               </div>
 
               <label class="editor-field editor-field-full">
@@ -1329,6 +1357,90 @@ archiveTitle.textContent =
 
   archiveArrow.textContent =
     isOpen ? "⌃" : "⌄";
+}
+
+    function addProductToEditor(orderId) {
+  const editor =
+    document.getElementById(
+      `editor-${orderId}`
+    );
+
+  if (!editor) {
+    return;
+  }
+
+  const productsContainer =
+    editor.querySelector(
+      ".editor-products"
+    );
+
+  if (!productsContainer) {
+    return;
+  }
+
+  const existingSelector =
+    productsContainer.querySelector(
+      ".editor-new-product-row"
+    );
+
+  if (existingSelector) {
+    return;
+  }
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "editor-product-row editor-new-product-row";
+
+  row.innerHTML = `
+    <select
+      class="editor-select editor-new-product-select"
+    >
+      <option value="">
+        Select product
+      </option>
+
+      <option value="The Heavenly Loaf">
+        The Heavenly Loaf
+      </option>
+
+      <option value="Hellapeño Cheese™">
+        Hellapeño Cheese™
+      </option>
+
+      <option value="Honey Oat">
+        Honey Oat
+      </option>
+
+      <option value="Heavenly Chocolate Chunk - 3-Pack">
+        Heavenly Chocolate Chunk - 3-Pack
+      </option>
+
+      <option value="Heavenly Chocolate Chunk - Dozen">
+        Heavenly Chocolate Chunk - Dozen
+      </option>
+    </select>
+
+    <input
+      type="number"
+      class="editor-quantity editor-new-product-quantity"
+      min="1"
+      max="100"
+      step="1"
+      value="1"
+    >
+  `;
+
+  const addButton =
+    productsContainer.querySelector(
+      ".editor-add-product"
+    );
+
+  productsContainer.insertBefore(
+    row,
+    addButton
+  );
 }
 
     function openOrderEditor(orderId) {

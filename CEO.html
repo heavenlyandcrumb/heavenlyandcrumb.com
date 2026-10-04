@@ -1252,7 +1252,7 @@ async function loadOrders() {
               <button
                 type="button"
                 class="editor-action-button primary"
-                disabled
+                onclick="saveOrderChanges('${order.id}')"
               >
                 SAVE CHANGES
               </button>
@@ -1562,6 +1562,150 @@ function closeOrderEditor(orderId) {
   }
 
   editor.classList.remove("show");
+}
+
+    async function saveOrderChanges(orderId) {
+  const editor =
+    document.getElementById(
+      `editor-${orderId}`
+    );
+
+  if (!editor) {
+    alert("Could not find that order editor ♡");
+    return;
+  }
+
+  const name =
+    document.getElementById(
+      `edit-name-${orderId}`
+    ).value.trim();
+
+  const requestedDate =
+    document.getElementById(
+      `edit-date-${orderId}`
+    ).value;
+
+  const phone =
+    document.getElementById(
+      `edit-phone-${orderId}`
+    ).value.trim();
+
+  const email =
+    document.getElementById(
+      `edit-email-${orderId}`
+    ).value.trim();
+
+  const preferredContact =
+    document.getElementById(
+      `edit-contact-${orderId}`
+    ).value;
+
+  const orderMethod =
+    document.getElementById(
+      `edit-method-${orderId}`
+    ).value;
+
+  const slicing =
+    document.getElementById(
+      `edit-slicing-${orderId}`
+    ).value;
+
+  const notes =
+    document.getElementById(
+      `edit-notes-${orderId}`
+    ).value.trim();
+
+  const items =
+    Array.from(
+      editor.querySelectorAll(
+        "[data-product]"
+      )
+    ).map(input => {
+      return {
+        name: input.dataset.product,
+        quantity: Number(input.value)
+      };
+    });
+
+  const remainingItems =
+    items.filter(item => {
+      return (
+        Number.isInteger(item.quantity) &&
+        item.quantity > 0
+      );
+    });
+
+  if (!name) {
+    alert("Customer name is required ♡");
+    return;
+  }
+
+  if (!phone) {
+    alert("Phone number is required ♡");
+    return;
+  }
+
+  if (!requestedDate) {
+    alert("Requested date is required ♡");
+    return;
+  }
+
+  if (remainingItems.length === 0) {
+    alert(
+      "An order needs at least one product ♡"
+    );
+    return;
+  }
+
+  try {
+    const response =
+      await fetch("/api/orders", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          editOrder: true,
+          name: name,
+          phone: phone,
+          email: email,
+          preferredContact:
+            preferredContact,
+          requestedDate:
+            requestedDate,
+          orderMethod: orderMethod,
+          slicing: slicing,
+          notes: notes,
+          items: items
+        })
+      });
+
+    const data =
+      await response.json();
+
+    if (
+      !response.ok ||
+      !data.success
+    ) {
+      throw new Error(
+        data.error ||
+        `Order API returned ${response.status}`
+      );
+    }
+
+    await loadOrders();
+
+  } catch (error) {
+    console.error(
+      "Could not save order changes:",
+      error
+    );
+
+    alert(
+      "Could not save those changes. Please try again ♡"
+    );
+  }
 }
 
 async function changeOrderStatus(orderId, newStatus) {

@@ -1432,6 +1432,174 @@ archiveTitle.textContent =
     >
   `;
 
+  const select =
+    row.querySelector(
+      ".editor-new-product-select"
+    );
+
+  select.addEventListener("change", () => {
+    finalizeAddedProduct(
+      orderId,
+      row,
+      select.value
+    );
+  });
+
+  const addButton =
+    productsContainer.querySelector(
+      ".editor-add-product"
+    );
+
+  productsContainer.insertBefore(
+    row,
+    addButton
+  );
+}
+
+    function finalizeAddedProduct(
+  orderId,
+  row,
+  productName
+) {
+  if (!productName) {
+    return;
+  }
+
+  const editor =
+    document.getElementById(
+      `editor-${orderId}`
+    );
+
+  if (!editor) {
+    return;
+  }
+
+  const existingProducts =
+    Array.from(
+      editor.querySelectorAll(
+        "[data-product]"
+      )
+    );
+
+  const duplicate =
+    existingProducts.some(input => {
+      return (
+        input.dataset.product ===
+        productName
+      );
+    });
+
+  if (duplicate) {
+    alert(
+      `${productName} is already on this order ♡`
+    );
+
+    const select =
+      row.querySelector(
+        ".editor-new-product-select"
+      );
+
+    if (select) {
+      select.value = "";
+    }
+
+    return;
+  }
+
+  const quantityInput =
+    row.querySelector(
+      ".editor-new-product-quantity"
+    );
+
+  const quantity =
+    quantityInput
+      ? quantityInput.value
+      : 1;
+
+  row.innerHTML = `
+    <span class="editor-product-name">
+      ${productName}
+    </span>
+
+    <input
+      type="number"
+      class="editor-quantity"
+      data-product="${productName}"
+      min="0"
+      max="100"
+      step="1"
+      value="${quantity}"
+    >
+  `;
+
+  row.classList.remove(
+    "editor-new-product-row"
+  );
+}
+
+  const productsContainer =
+    editor.querySelector(
+      ".editor-products"
+    );
+
+  if (!productsContainer) {
+    return;
+  }
+
+  const existingSelector =
+    productsContainer.querySelector(
+      ".editor-new-product-row"
+    );
+
+  if (existingSelector) {
+    return;
+  }
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "editor-product-row editor-new-product-row";
+
+  row.innerHTML = `
+    <select
+      class="editor-select editor-new-product-select"
+    >
+      <option value="">
+        Select product
+      </option>
+
+      <option value="The Heavenly Loaf">
+        The Heavenly Loaf
+      </option>
+
+      <option value="Hellapeño Cheese™">
+        Hellapeño Cheese™
+      </option>
+
+      <option value="Honey Oat">
+        Honey Oat
+      </option>
+
+      <option value="Heavenly Chocolate Chunk - 3-Pack">
+        Heavenly Chocolate Chunk - 3-Pack
+      </option>
+
+      <option value="Heavenly Chocolate Chunk - Dozen">
+        Heavenly Chocolate Chunk - Dozen
+      </option>
+    </select>
+
+    <input
+      type="number"
+      class="editor-quantity editor-new-product-quantity"
+      min="1"
+      max="100"
+      step="1"
+      value="1"
+    >
+  `;
+
   const addButton =
     productsContainer.querySelector(
       ".editor-add-product"

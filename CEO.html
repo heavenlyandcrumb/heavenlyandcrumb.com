@@ -411,6 +411,54 @@
   resize: vertical;
 }
 
+    .editor-products {
+  grid-column: 1 / -1;
+  padding: 14px;
+  background: #F8F4EC;
+  border-radius: 10px;
+}
+
+.editor-products-heading {
+  margin: 0 0 10px;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+.editor-product-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(27, 35, 54, 0.08);
+}
+
+.editor-product-row:first-of-type {
+  border-top: none;
+}
+
+.editor-product-name {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.editor-quantity {
+  width: 70px;
+  padding: 8px;
+  border: 1px solid rgba(27, 35, 54, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1B2336;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  text-align: center;
+}
+
 .editor-actions {
   display: flex;
   justify-content: flex-end;
@@ -937,6 +985,29 @@ async function loadOrders() {
         })
         .join("");
 
+    const productRows = order.items
+        .map((item, index) => {
+          return `
+            <div class="editor-product-row">
+              <span class="editor-product-name">
+                ${item.name}
+              </span>
+
+              <input
+                type="number"
+                class="editor-quantity"
+                id="edit-item-${order.id}-${index}"
+                data-product="${item.name}"
+                min="0"
+                max="100"
+                step="1"
+                value="${item.quantity}"
+              >
+            </div>
+          `;
+        })
+        .join("");
+
       return `
         <div class="management-card">
           <div class="management-top">
@@ -1094,6 +1165,14 @@ async function loadOrders() {
                   </option>
                 </select>
               </label>
+
+              <div class="editor-products">
+              <p class="editor-products-heading">
+              Products & Quantities
+              </p>
+
+              ${productRows}
+              </div>
 
               <label class="editor-field editor-field-full">
                 <span class="editor-label">

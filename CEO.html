@@ -1253,19 +1253,30 @@ archiveTitle.textContent =
 }
 
     function openOrderEditor(orderId) {
-  const order = orders.find(order => {
-    return order.id === orderId;
-  });
+  const editor =
+    document.getElementById(
+      `editor-${orderId}`
+    );
 
-  if (!order) {
-    alert("Could not find that order ♡");
+  if (!editor) {
+    alert("Could not open that order ♡");
     return;
   }
 
-  console.log(
-    "Opening order editor:",
-    order
-  );
+  editor.classList.add("show");
+}
+
+function closeOrderEditor(orderId) {
+  const editor =
+    document.getElementById(
+      `editor-${orderId}`
+    );
+
+  if (!editor) {
+    return;
+  }
+
+  editor.classList.remove("show");
 }
 
 async function changeOrderStatus(orderId, newStatus) {

@@ -146,6 +146,19 @@
   font-weight: normal;
 }
 
+    .order-payment-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.order-payment-summary .order-tag {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .order-total {
   font-family: Georgia, serif;
   font-size: 22px;
@@ -345,6 +358,17 @@
   letter-spacing: 0.8px;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+    .payment-button {
+  display: block;
+  margin-left: auto;
+  min-width: 68px;
+  text-align: center;
+}
+
+.payment-button:hover {
+  background: rgba(27, 35, 54, 0.06);
 }
 
     .order-editor {
@@ -794,10 +818,15 @@ async function loadOrders() {
               </h3>
             </div>
 
+            <div class="order-payment-summary">
             <div class="order-total">
-              $${order.total.toFixed(2).replace(".00", "")}
+            $${order.total.toFixed(2).replace(".00", "")}
             </div>
-          </div>
+
+<span class="order-tag ${order.paymentStatus === "Paid" ? "order-status" : ""}">
+${order.paymentStatus === "Paid" ? "PAID ✓" : "UNPAID"}
+  </span>
+</div>
 
           <div class="order-items">
             ${items}
@@ -1039,8 +1068,18 @@ async function loadOrders() {
                 type="button"
                 class="edit-order-button"
                 onclick="openOrderEditor('${order.id}')"
-              >
+                            >
                 EDIT
+              </button>
+
+              <button
+                type="button"
+                class="edit-order-button payment-button"
+                onclick="toggleOrderPayment('${order.id}')"
+              >
+                ${order.paymentStatus === "Paid"
+                  ? "PAID ✓"
+                  : "UNPAID"}
               </button>
             </div>
           </div>
@@ -1317,10 +1356,14 @@ archiveTitle.textContent =
             </span>
 
             <span class="order-tag">
-              $${order.total.toFixed(2).replace(".00", "")}
-            </span>
+  $${order.total.toFixed(2).replace(".00", "")}
+</span>
 
-            <button
+<span class="order-tag ${order.paymentStatus === "Paid" ? "order-status" : ""}">
+  ${order.paymentStatus === "Paid" ? "PAID ✓" : "UNPAID"}
+</span>
+
+<button
             type="button"
             class="status-button"
             onclick="changeOrderStatus('${order.id}', 'Complete')"
@@ -1697,6 +1740,56 @@ function closeOrderEditor(orderId) {
   }
 }
 
+    async function toggleOrderPayment(orderId) {
+  const order = orders.find(
+    order => order.id === orderId
+  );
+
+  if (!order) {
+    alert("Could not find that order ♡");
+    return;
+  }
+
+  const newPaymentStatus =
+    order.paymentStatus === "Paid"
+      ? "Unpaid"
+      : "Paid";
+
+  try {
+    const response = await fetch("/api/orders", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        orderId: orderId,
+        paymentStatus: newPaymentStatus
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.error ||
+        `Payment update failed: ${response.status}`
+      );
+    }
+
+    await loadOrders();
+
+  } catch (error) {
+    console.error(
+      "Could not update payment status:",
+      error
+    );
+
+    alert(
+      "Could not update payment status. Please try again ♡"
+    );
+  }
+}
+    
 async function changeOrderStatus(orderId, newStatus) {
   try {
     const response = await fetch("/api/orders", {

@@ -881,19 +881,8 @@ async function loadOrders() {
 
   activeOrders.forEach(order => {
     order.items.forEach(item => {
-      let productionName = item.name;
-      let productionQuantity = item.quantity;
-
-      if (
-        item.name ===
-        "Heavenly Chocolate Chunk — Dozen"
-      ) {
-        productionName =
-          "Heavenly Chocolate Chunk";
-
-        productionQuantity =
-          item.quantity * 12;
-      }
+      const productionName = item.name;
+      const productionQuantity = item.quantity;
 
       if (!productionTotals[productionName]) {
         productionTotals[productionName] = 0;

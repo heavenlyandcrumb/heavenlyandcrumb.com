@@ -184,6 +184,34 @@
       letter-spacing: 0.5px;
     }
 
+    /* LIVE MENU AVAILABILITY */
+
+.menu-status {
+  display: none;
+  width: fit-content;
+  margin: 0 0 18px;
+  padding: 8px 13px;
+  border: 1px solid rgba(27, 35, 54, 0.25);
+  border-radius: 20px;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.menu-status.is-visible {
+  display: inline-block;
+}
+
+.story-row.is-unavailable {
+  opacity: 0.48;
+}
+
+.story-row.is-unavailable .story-image img {
+  filter: grayscale(65%);
+}
+    
     /* DIVIDERS */
 
     .divider {
@@ -441,7 +469,7 @@
         </div>
 
         <!-- THE HEAVENLY LOAF -->
-        <div class="story-row">
+        <div class="story-row" data-product-key="heavenly-loaf">
             <div class="story-image">
                 <img
                     src="heavenlylight.JPEG"
@@ -467,7 +495,7 @@
         <div class="divider">♡</div>
 
         <!-- HELLAPEÑO CHEESE -->
-        <div class="story-row reverse">
+        <div class="story-row reverse" data-product-key="hellapeno-cheese">
             <div class="story-image">
                 <img
                     src="hell.JPEG"
@@ -492,8 +520,34 @@
 
         <div class="divider">♡</div>
 
-        <!-- HONEY OAT -->
-        <div class="story-row">
+      <!-- SEEDED WHEAT -->
+<div class="story-row" data-product-key="seeded-wheat">
+  <div class="story-image">
+    <img
+      src="seed.JPEG"
+      alt="Seeded Wheat artisan sourdough"
+    >
+    <p class="caption">
+      Rustic, hearty, and beautifully seeded. ♡
+    </p>
+  </div>
+
+  <div class="story-text">
+    <p class="eyebrow">RUSTIC & HEARTY</p>
+    <h2>Seeded Wheat</h2>
+    <p>
+      A rustic artisan sourdough crafted with a blend of
+      whole wheat and bread flour, with seeds throughout
+      the crumb for a hearty, flavorful loaf.
+    </p>
+    <p><strong>$14</strong></p>
+  </div>
+</div>
+
+<div class="divider">♡</div>
+      
+       <!-- HONEY OAT -->
+<div class="story-row reverse" data-product-key="honey-oat">
             <div class="story-image">
                 <img
                     src="honey.JPEG"
@@ -512,7 +566,7 @@
                     with a beautiful oat coating for a subtly sweet,
                     cozy twist on our classic loaf.
                 </p>
-                <p><strong>$12</strong></p>
+                <p><strong>$14</strong></p>
             </div>
         </div>
 
@@ -527,7 +581,7 @@
         </div>
 
         <!-- HEAVENLY CHOCOLATE CHUNK -->
-        <div class="story-row reverse">
+        <div class="story-row reverse" data-product-key="chocolate-chunk">
             <div class="story-image">
                 <img
                     src="took.JPEG"
@@ -556,7 +610,7 @@
         <div class="divider">♡</div>
 
         <!-- SERENITY CINNAMON SWIRL -->
-        <div class="story-row">
+       <div class="story-row" data-product-key="serenity-cinnamon-swirl">
             <div class="story-text">
                 <p class="eyebrow">COMING SOON ♡</p>
                 <h2>Serenity Cinnamon Swirl</h2>
@@ -595,5 +649,69 @@
     HOMEMADE • SMALL BATCH • BAKED WITH LOVE ♡
   </footer>
 
+  <script>
+  document.querySelectorAll("[data-product-key]").forEach((row) => {
+    const text = row.querySelector(".story-text");
+    const heading = text?.querySelector("h2");
+
+    if (!text || !heading) return;
+
+    const badge = document.createElement("span");
+    badge.className = "menu-status";
+    badge.setAttribute("aria-live", "polite");
+
+    heading.insertAdjacentElement("beforebegin", badge);
+    });
+
+  async function loadPublicMenu() {
+    try {
+      const response = await fetch("/api/menu", {
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error("Menu unavailable");
+      }
+
+      const data = await response.json();
+
+      if (!data.success || !Array.isArray(data.products)) {
+        throw new Error("Invalid menu data");
+      }
+
+      data.products.forEach((product) => {
+        const row = document.querySelector(
+          `[data-product-key="${product.product_key}"]`
+        );
+
+        if (!row) return;
+
+        const badge = row.querySelector(".menu-status");
+        if (!badge) return;
+
+        const labels = {
+          available: "Available",
+          unavailable: "Currently Unavailable",
+          request: "Available Upon Request",
+          "coming-soon": "Coming Soon"
+        };
+
+        const status = product.status;
+        badge.textContent = labels[status] || "Currently Unavailable";
+        badge.classList.add("is-visible");
+
+        row.classList.toggle(
+          "is-unavailable",
+          status !== "available"
+        );
+      });
+    } catch (error) {
+      console.error("Could not load menu availability:", error);
+    }
+  }
+
+  loadPublicMenu();
+</script>
+  
 </body>
 </html>

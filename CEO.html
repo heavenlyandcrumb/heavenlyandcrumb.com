@@ -636,6 +636,51 @@
         font-size: 42px;
       }
     }
+
+    /* MENU MANAGEMENT */
+
+.menu-product-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(27, 35, 54, 0.10);
+}
+
+.menu-product-row:last-child {
+  border-bottom: none;
+}
+
+.menu-product-name {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  color: #1B2336;
+}
+
+.menu-status-select {
+  padding: 10px 12px;
+  border: 1px solid rgba(27, 35, 54, 0.18);
+  border-radius: 9px;
+  background: #F8F4EC;
+  color: #1B2336;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.menu-status-select:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.menu-feedback {
+  margin: 12px 0 0;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #1B2336;
+}
   </style>
 </head>
 
@@ -719,6 +764,18 @@
   ></div>
 </section>
 
+    <section class="section">
+  <h2 class="section-title">MENU MANAGEMENT</h2>
+
+  <div class="card">
+    <p class="placeholder">
+      Manage product availability for the Heavenly & Crumb menu. ♡
+    </p>
+
+    <div id="menuManagementList"></div>
+  </div>
+</section>
+    
     <footer class="internal-footer">
       HEAVENLY &amp; CRUMB • CEO EYES ONLY ♡
     </footer>
@@ -727,6 +784,22 @@
 
   <script>
  let orders = [];
+
+    const menuProducts = [
+  { key: "heavenly-loaf", name: "The Heavenly Loaf" },
+  { key: "hellapeno-cheese", name: "Hellapeño Cheese™" },
+  { key: "seeded-wheat", name: "Seeded Wheat" },
+  { key: "honey-oat", name: "Honey Oat" },
+  { key: "chocolate-chunk", name: "Heavenly Chocolate Chunk Tookies" },
+  { key: "serenity-cinnamon-swirl", name: "Serenity Cinnamon Swirl" }
+];
+
+const menuStatusOptions = [
+  { value: "available", label: "Available" },
+  { value: "unavailable", label: "Unavailable" },
+  { value: "request", label: "Available Upon Request" },
+  { value: "coming-soon", label: "Coming Soon" }
+];
 
 async function loadOrders() {
   try {
@@ -925,10 +998,11 @@ async function loadOrders() {
     if (order.slicing === "Yes — Pre-Slice") {
       order.items.forEach(item => {
         const sliceableLoaves = [
-          "The Heavenly Loaf",
-          "Hellapeño Cheese™",
-          "Honey Oat"
-        ];
+  "The Heavenly Loaf",
+  "Hellapeño Cheese™",
+  "Seeded Wheat",
+  "Honey Oat"
+];
 
         if (sliceableLoaves.includes(item.name)) {
           slicingTotal += item.quantity;
@@ -1442,6 +1516,10 @@ archiveTitle.textContent =
         Hellapeño Cheese™
       </option>
 
+    <option value="Seeded Wheat">
+  Seeded Wheat
+</option>
+
       <option value="Honey Oat">
         Honey Oat
       </option>
@@ -1900,7 +1978,128 @@ async function changeOrderStatus(orderId, newStatus) {
     }
   }
 
+    async function saveMenuStatus(productKey, newStatus, select) {
+  const previousStatus = select.dataset.savedStatus;
+
+  select.disabled = true;
+
+  try {
+    const response = await fetch("/api/menu-admin", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        productKey: productKey,
+        status: newStatus
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Menu update failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.error || "Menu update failed");
+    }
+
+    select.dataset.savedStatus = newStatus;
+
+  } catch (error) {
+    console.error("Could not update menu availability:", error);
+
+    select.value = previousStatus;
+
+    alert(
+      "Could not save that menu change. Please try again. ♡"
+    );
+
+  } finally {
+    select.disabled = false;
+  }
+}
+
+    async function loadMenuManagement() {
+  const container = document.getElementById("menuManagementList");
+
+  if (!container) return;
+
+  container.textContent = "Loading menu availability...";
+
+  try {
+    const response = await fetch("/api/menu", {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error(`Menu API returned ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (!data.success || !Array.isArray(data.products)) {
+      throw new Error("Invalid menu response");
+    }
+
+    container.innerHTML = "";
+
+    menuProducts.forEach(product => {
+      const record = data.products.find(
+        item => item.product_key === product.key
+      );
+
+      const row = document.createElement("div");
+      row.className = "menu-product-row";
+
+      const name = document.createElement("span");
+      name.className = "menu-product-name";
+      name.textContent = product.name;
+
+      const select = document.createElement("select");
+      select.className = "menu-status-select";
+      select.dataset.productKey = product.key;
+
+      select.addEventListener("change", () => {
+  saveMenuStatus(
+    product.key,
+    select.value,
+    select
+  );
+});
+
+      menuStatusOptions.forEach(option => {
+        const element = document.createElement("option");
+        element.value = option.value;
+        element.textContent = option.label;
+        select.appendChild(element);
+      });
+
+      if (record && menuStatusOptions.some(
+        option => option.value === record.status
+      )) {
+        select.value = record.status;
+select.dataset.savedStatus = record.status;
+      } else {
+        select.disabled = true;
+        name.textContent += " — Status unavailable";
+      }
+
+      row.appendChild(name);
+      row.appendChild(select);
+      container.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error("Could not load menu:", error);
+    container.textContent =
+      "Could not load menu availability. Please try again. ♡";
+  }
+}
+
 loadOrders();
+loadMenuManagement();
     
 </script>
 

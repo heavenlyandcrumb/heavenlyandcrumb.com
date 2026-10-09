@@ -135,6 +135,44 @@
       padding: 6px 10px;
     }
 
+    /* PREORDER LOADING SAFETY */
+
+.product[data-key] .quantity button {
+  pointer-events: none;
+}
+
+body.menu-ready .product[data-key] .quantity button:not(:disabled) {
+  pointer-events: auto;
+}
+
+    /* LIVE PRODUCT AVAILABILITY */
+
+.product.is-unavailable {
+  opacity: 0.45;
+}
+
+.product.is-unavailable .quantity {
+  opacity: 0.5;
+}
+
+.product .quantity button:disabled {
+  cursor: not-allowed;
+}
+
+.product-status {
+  display: none;
+  margin-top: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.product.is-unavailable .product-status {
+  display: block;
+}
+
     /* QUANTITY */
 
     .quantity {
@@ -502,7 +540,7 @@
 
     <div class="product-category">ARTISAN SOURDOUGH</div>
 
-<div class="product" data-name="The Heavenly Loaf" data-price="10" data-sliceable="true">
+<div class="product" data-key="heavenly-loaf" data-name="The Heavenly Loaf" data-price="10" data-sliceable="true">
   <div class="product-info">
     <div class="product-name">The Heavenly Loaf</div>
     <div class="product-description">
@@ -519,7 +557,7 @@
 </div>
 
 
-<div class="product" data-name="Hellapeño Cheese™" data-price="14" data-sliceable="true">
+<div class="product" data-key="hellapeno-cheese" data-name="Hellapeño Cheese™" data-price="14" data-sliceable="true">
   <div class="product-info">
     <div class="product-name">Hellapeño Cheese™</div>
     <div class="product-description">
@@ -535,11 +573,11 @@
   </div>
 </div>
 
-    <div class="product" data-name="Seeded Wheat" data-price="14" data-sliceable="true">
+    <div class="product" data-key="seeded-wheat" data-name="Seeded Wheat" data-price="14" data-sliceable="true">
   <div class="product-info">
     <div class="product-name">Seeded Wheat</div>
     <div class="product-description">
-      Rustic whole wheat blend artisan sourdough with seeds throughout.
+      Rustic whole wheat and four-seed blend artisan sourdough.
     </div>
     <div class="product-price">$14</div>
   </div>
@@ -552,7 +590,7 @@
 </div>
 
 
-<div class="product" data-name="Honey Oat" data-price="14" data-sliceable="true">
+<div class="product" data-key="honey-oat" data-name="Honey Oat" data-price="14" data-sliceable="true">
   <div class="product-info">
     <div class="product-name">Honey Oat</div>
     <div class="product-description">
@@ -606,6 +644,7 @@
 
 <div
   class="product"
+  data-key="chocolate-chunk"
   data-name="Heavenly Chocolate Chunk - 3-Pack"
   data-price="5"
 >
@@ -629,6 +668,7 @@
 
 <div
   class="product"
+  data-key="chocolate-chunk"
   data-name="Heavenly Chocolate Chunk - Dozen"
   data-price="15"
 >
@@ -650,7 +690,7 @@
 </div>
 
 
-<div class="product">
+<div class="product" data-key="serenity-cinnamon-swirl" data-name="Serenity Cinnamon Swirl" data-price="6">
   <div class="product-info">
     <div class="product-name">Serenity Cinnamon Swirl</div>
     <div class="product-description">
@@ -659,25 +699,10 @@
     <div class="product-price">$6</div>
   </div>
 
-  <div
-    style="
-      flex-shrink: 0;
-      padding: 9px 12px;
-      border-radius: 30px;
-      background: #1B2336;
-      color: #F8F4EC;
-      font-family: Arial, sans-serif;
-      font-size: 10px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      white-space: nowrap;
-    "
-  >
-    <div class="quantity" style="display: none;">
-      <span>0</span>
-    </div>
-    
-    COMING SOON
+  <div class="quantity">
+    <button type="button" onclick="changeQty(this, -1)">−</button>
+    <span>0</span>
+    <button type="button" onclick="changeQty(this, 1)">+</button>
   </div>
 </div>
 
@@ -967,8 +992,103 @@
     });
   }
 }
-    
-    function changeQty(button, amount) {
+
+    /* LIVE MENU AVAILABILITY */
+
+let menuAvailabilityLoaded = false;
+
+async function loadPreorderAvailability(showAlert = true) {
+    menuAvailabilityLoaded = false;
+  document.body.classList.remove("menu-ready");
+  const products = document.querySelectorAll(".product[data-key]");
+
+  // Keep ordering disabled until availability is verified.
+  products.forEach(product => {
+    product.querySelectorAll(".quantity button").forEach(button => {
+      button.disabled = true;
+    });
+  });
+
+  try {
+    const response = await fetch("/api/menu", {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("Could not load menu availability");
+    }
+
+    const data = await response.json();
+
+    if (!data.success || !Array.isArray(data.products)) {
+      throw new Error("Invalid menu availability response");
+    }
+
+    const statuses = new Map(
+      data.products.map(item => [item.product_key, item.status])
+    );
+
+    products.forEach(product => {
+      const status = statuses.get(product.dataset.key);
+      const available = status === "available";
+
+      product.classList.toggle("is-unavailable", !available);
+
+      let label = product.querySelector(".product-status");
+
+      if (!label) {
+        label = document.createElement("div");
+        label.className = "product-status";
+        product.querySelector(".product-info").appendChild(label);
+      }
+
+      label.textContent =
+        status === "request" ? "AVAILABLE UPON REQUEST" :
+        status === "coming-soon" ? "COMING SOON" :
+        status === "unavailable" ? "UNAVAILABLE" :
+        status === "available" ? "" :
+        "CURRENTLY UNAVAILABLE";
+
+      product.querySelectorAll(".quantity button").forEach(button => {
+        button.disabled = !available;
+      });
+
+      if (!available) {
+        const quantity = product.querySelector(".quantity span");
+
+        if (quantity) {
+          quantity.textContent = "0";
+        }
+      }
+    });
+
+    menuAvailabilityLoaded = true;
+    document.body.classList.add("menu-ready");
+    updateTotal();
+    updateProductValidation();
+    updateSlicingOption();
+
+  } catch (error) {
+    console.error("Menu availability error:", error);
+    menuAvailabilityLoaded = false;
+        document.body.classList.remove("menu-ready");
+    if (showAlert) {
+  alert("Our preorder menu is temporarily unavailable. Please try again shortly. ♡");
+}
+}
+}
+
+function changeQty(button, amount) {
+        const product = button.closest(".product");
+
+  if (
+    !menuAvailabilityLoaded ||
+    !product ||
+    product.classList.contains("is-unavailable") ||
+    button.disabled
+  ) {
+    return;
+  }
       const quantity = button.parentElement;
       const number = quantity.querySelector("span");
 
@@ -1147,10 +1267,11 @@ slicingChoicesForValidation.forEach(option => {
 
     
 setMinimumDate();
-    updateTotal();
-    updateEmailRequirement();
-    updateProductValidation();
-    updateSlicingOption();
+updateTotal();
+updateEmailRequirement();
+updateProductValidation();
+updateSlicingOption();
+loadPreorderAvailability();
     
     requestedDate.addEventListener("invalid", function() {
   if (requestedDate.validity.rangeUnderflow) {
@@ -1176,6 +1297,13 @@ requestedDate.addEventListener("input", function() {
   <script>
   orderForm.addEventListener("submit", async function(event) {
     event.preventDefault();
+
+      if (!menuAvailabilityLoaded) {
+    alert(
+      "Our preorder menu is still loading or temporarily unavailable. Please refresh and try again. ♡"
+    );
+    return;
+  }
 
     const submitButton =
       orderForm.querySelector(".submit-button");
@@ -1217,6 +1345,32 @@ requestedDate.addEventListener("input", function() {
             });
           }
         });
+
+      // Recheck availability before submitting the preorder.
+const selectedItemsBeforeCheck = items.map(item => ({ ...item }));
+
+await loadPreorderAvailability(false);
+
+if (!menuAvailabilityLoaded) {
+  throw new Error(
+    "We couldn't verify product availability. Please try again. ♡"
+  );
+}
+
+const unavailableItems = selectedItemsBeforeCheck.filter(item => {
+  const product = Array.from(
+    document.querySelectorAll(".product[data-name]")
+  ).find(element => element.dataset.name === item.name);
+
+  return !product ||
+    product.classList.contains("is-unavailable");
+});
+
+if (unavailableItems.length > 0) {
+  throw new Error(
+    "One or more selected bakes are no longer available. Please review your order. ♡"
+  );
+}
 
       const turnstileToken =
         orderForm.querySelector(
@@ -1283,8 +1437,10 @@ requestedDate.addEventListener("input", function() {
       );
 
       alert(
-        "TEST ERROR: " + error.message
-      );
+  "We couldn't submit your preorder. " +
+  (error.message || "Please try again shortly.") +
+  "\n\nIf this continues, email orders@heavenlyandcrumb.com ♡"
+);
 
       submitButton.disabled = false;
       submitButton.textContent =

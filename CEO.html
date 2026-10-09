@@ -321,7 +321,7 @@
 
 .status-buttons {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
   gap: 7px;
 }
 
@@ -966,11 +966,12 @@ async function loadOrders() {
     document.getElementById("productionList");
 
   const activeOrders = orders.filter(order => {
-    return (
-      order.status !== "Complete" &&
-      order.status !== "Archive"
-      );
-  });
+  return (
+    order.status !== "Pending" &&
+    order.status !== "Complete" &&
+    order.status !== "Archive"
+  );
+});
 
   if (activeOrders.length === 0) {
     productionList.innerHTML =
@@ -1073,11 +1074,12 @@ async function loadOrders() {
   managementList.innerHTML = managementOrders
     .map(order => {
       const statuses = [
-        "Confirmed",
-        "Baking",
-        "Complete",
-        "Archive"
-      ];
+  "Pending",
+  "Confirmed",
+  "Baking",
+  "Complete",
+  "Archive"
+];
 
       const buttons = statuses
         .map(status => {
@@ -1533,6 +1535,10 @@ archiveTitle.textContent =
       </option>
     </select>
 
+    <option value="Serenity Cinnamon Swirl">
+  Serenity Cinnamon Swirl
+</option>
+
     <input
       type="number"
       class="editor-quantity editor-new-product-quantity"
@@ -1924,11 +1930,12 @@ async function changeOrderStatus(orderId, newStatus) {
       document.getElementById("itemsToBake");
 
     const activeOrders = orders.filter(order => {
-      return (
-        order.status !== "Complete" &&
-        order.status !== "Archive"
-        );
-    });
+  return (
+    order.status !== "Pending" &&
+    order.status !== "Complete" &&
+    order.status !== "Archive"
+  );
+});
 
     const totalSales = activeOrders.reduce(
       (total, order) => total + order.total,

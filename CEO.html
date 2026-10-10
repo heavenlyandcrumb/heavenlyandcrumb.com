@@ -681,6 +681,43 @@
   font-size: 12px;
   color: #1B2336;
 }
+
+  /* CEO QUICK NAVIGATION */
+
+.ceo-navigation {
+  margin: 16px 0 28px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(27, 35, 54, 0.12);
+  border-radius: 14px;
+}
+
+.ceo-navigation label {
+  display: block;
+  margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: #1B2336;
+}
+
+.ceo-navigation select {
+  width: 100%;
+  padding: 13px;
+  background: #F8F4EC;
+  border: 1px solid rgba(27, 35, 54, 0.2);
+  border-radius: 9px;
+  color: #1B2336;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+    
   </style>
 </head>
 
@@ -700,7 +737,21 @@
 
   <main class="workpage">
 
-  <section class="section">
+    <div class="ceo-navigation">
+  <label for="ceoJump">JUMP TO SECTION ♡</label>
+
+  <select id="ceoJump" onchange="jumpToCEOSection(this.value)">
+    <option value="">Select a section</option>
+    <option value="ceo-overview">Overview</option>
+    <option value="ceo-upcoming">Upcoming Orders</option>
+    <option value="ceo-production">Production</option>
+    <option value="ceo-management">Order Management</option>
+    <option value="ceo-menu">Menu Management</option>
+    <option value="ceo-archive">Archive</option>
+  </select>
+</div>
+
+  <section class="section" id="ceo-overview">
   <h2 class="section-title">OVERVIEW</h2>
 
   <div class="overview-grid">
@@ -728,26 +779,38 @@
   </div>
 </section>
 
-    <section class="section">
+    <section class="section" id="ceo-upcoming">
   <h2 class="section-title">UPCOMING ORDERS</h2>
 
   <div id="ordersList" class="orders-list"></div>
 </section>
 
 
-    <section class="section">
+   <section class="section" id="ceo-production">
   <h2 class="section-title">PRODUCTION</h2>
 
   <div id="productionList" class="production-list"></div>
 </section>
 
-      <section class="section">
+     <section class="section" id="ceo-management">
   <h2 class="section-title">ORDER MANAGEMENT</h2>
 
   <div id="managementList" class="management-list"></div>
 </section>
 
-    <section class="section">
+    <section class="section" id="ceo-menu">
+  <h2 class="section-title">MENU MANAGEMENT</h2>
+
+  <div class="card">
+    <p class="placeholder">
+      Manage product availability for the Heavenly & Crumb menu. ♡
+    </p>
+
+    <div id="menuManagementList"></div>
+  </div>
+</section>
+
+     <section class="section" id="ceo-archive">
   <button
     type="button"
     class="archive-toggle"
@@ -764,17 +827,6 @@
   ></div>
 </section>
 
-    <section class="section">
-  <h2 class="section-title">MENU MANAGEMENT</h2>
-
-  <div class="card">
-    <p class="placeholder">
-      Manage product availability for the Heavenly & Crumb menu. ♡
-    </p>
-
-    <div id="menuManagementList"></div>
-  </div>
-</section>
     
     <footer class="internal-footer">
       HEAVENLY &amp; CRUMB • CEO EYES ONLY ♡
@@ -2107,6 +2159,19 @@ select.dataset.savedStatus = record.status;
 
 loadOrders();
 loadMenuManagement();
+
+    function jumpToCEOSection(sectionId) {
+  if (!sectionId) return;
+
+  const section = document.getElementById(sectionId);
+
+  if (section) {
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+}
     
 </script>
 
